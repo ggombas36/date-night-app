@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { authService } from '../services/authService';
+import AuthButton from './AuthButton';
 
 interface LoginProps {
   onLoginSuccess: () => void;
@@ -61,14 +62,11 @@ export default function Login({ onLoginSuccess }: LoginProps) {
             <p className="text-red-500 text-sm text-center">{error}</p>
           )}
           
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="bg-emerald-600 text-white py-2 px-4 rounded hover:bg-emerald-700 
-                     transition-colors duration-300 disabled:bg-emerald-400"
-          >
-            {isLoading ? 'Logging in...' : 'Login'}
-          </button>
+          <AuthButton 
+            isAuthenticated={false} 
+            isLoading={isLoading} 
+            isSubmit={true}
+          />
         </form>
       </div>
     </div>
