@@ -6,9 +6,11 @@ import DateNightContent from "../components/DateNightContent";
 import Login from "../components/Login";
 import { authService } from "../services/authService";
 import AuthButton from "../components/AuthButton";
+import datePlans from "../data/datePlans.json";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
 
   useEffect(() => {
     // Check initial auth state
@@ -37,6 +39,14 @@ export default function Home() {
     setIsAuthenticated(false);
   };
 
+  const handlePrevious = () => {
+    setCurrentPlanIndex(prev => Math.min(prev + 1, datePlans.length - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentPlanIndex(prev => Math.max(prev - 1, 0));
+  };
+
   if (!isAuthenticated) {
     return (
       <div
@@ -47,6 +57,9 @@ export default function Home() {
       </div>
     );
   }
+
+  // Get the current plan to display
+  const currentPlan = datePlans[currentPlanIndex];
 
   return (
     <>
@@ -60,8 +73,14 @@ export default function Home() {
           onLogout={handleLogout}
         />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard isMobile={true}>
-            <DateNightContent />
+          <DateNightCard isMobile={true} currentPlan={currentPlan}>
+            <DateNightContent 
+              currentPlan={currentPlan}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              hasPrevious={currentPlanIndex < datePlans.length - 1}
+              hasNext={currentPlanIndex > 0}
+            />
           </DateNightCard>
         </div>
       </div>
@@ -76,8 +95,14 @@ export default function Home() {
           onLogout={handleLogout}
         />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard>
-            <DateNightContent />
+          <DateNightCard currentPlan={currentPlan}>
+            <DateNightContent 
+              currentPlan={currentPlan}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              hasPrevious={currentPlanIndex < datePlans.length - 1}
+              hasNext={currentPlanIndex > 0}
+            />
           </DateNightCard>
         </div>
       </div>
