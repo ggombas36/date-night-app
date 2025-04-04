@@ -5,9 +5,12 @@ import DateNightCard from "../components/DateNightCard";
 import DateNightContent from "../components/DateNightContent";
 import Login from "../components/Login";
 import { authService } from "../services/authService";
+import AuthButton from "../components/AuthButton";
+import datePlans from "../data/datePlans.json";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
 
   useEffect(() => {
     // Check initial auth state
@@ -31,10 +34,23 @@ export default function Home() {
     setIsAuthenticated(true);
   };
 
+  const handleLogout = () => {
+    authService.logout();
+    setIsAuthenticated(false);
+  };
+
+  const handlePrevious = () => {
+    setCurrentPlanIndex(prev => Math.min(prev + 1, datePlans.length - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentPlanIndex(prev => Math.max(prev - 1, 0));
+  };
+
   if (!isAuthenticated) {
     return (
       <div
-        className="w-screen h-screen bg-cover bg-center bg-no-repeat"
+        className="w-screen h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{ backgroundImage: `url(${desktopBackground})` }}
       >
         <Login onLoginSuccess={handleLoginSuccess} />
@@ -42,28 +58,51 @@ export default function Home() {
     );
   }
 
+  // Get the current plan to display
+  const currentPlan = datePlans[currentPlanIndex];
+
   return (
     <>
       {/* Mobile view */}
       <div
-        className="w-screen h-screen bg-cover bg-center bg-no-repeat md:hidden"
+        className="w-screen h-screen bg-cover bg-center bg-no-repeat md:hidden overflow-hidden"
         style={{ backgroundImage: `url(${mobileBackground})` }}
       >
+        <AuthButton 
+          isAuthenticated={true} 
+          onLogout={handleLogout}
+        />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard isMobile={true}>
-            <DateNightContent />
+          <DateNightCard isMobile={true} currentPlan={currentPlan}>
+            <DateNightContent 
+              currentPlan={currentPlan}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              hasPrevious={currentPlanIndex < datePlans.length - 1}
+              hasNext={currentPlanIndex > 0}
+            />
           </DateNightCard>
         </div>
       </div>
 
       {/* Desktop view */}
       <div
-        className="hidden md:block w-screen h-screen bg-cover bg-center bg-no-repeat"
+        className="hidden md:block w-screen h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
         style={{ backgroundImage: `url(${desktopBackground})` }}
       >
+        <AuthButton 
+          isAuthenticated={true} 
+          onLogout={handleLogout}
+        />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard>
-            <DateNightContent />
+          <DateNightCard currentPlan={currentPlan}>
+            <DateNightContent 
+              currentPlan={currentPlan}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
+              hasPrevious={currentPlanIndex < datePlans.length - 1}
+              hasNext={currentPlanIndex > 0}
+            />
           </DateNightCard>
         </div>
       </div>
