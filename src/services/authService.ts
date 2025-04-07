@@ -7,8 +7,8 @@ interface User {
 // Define both users
 const USERS: User[] = [
   {
-    username: import.meta.env.VITE_AUTH_USERNAME,
-    password: import.meta.env.VITE_AUTH_PASSWORD,
+    username: import.meta.env.VITE_AUTH_USERNAME || "Kicsi",
+    password: import.meta.env.VITE_AUTH_PASSWORD || "20220331",
     isAdmin: false
   },
   {
