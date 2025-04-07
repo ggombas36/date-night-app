@@ -5,6 +5,7 @@ interface DatePlan {
   title: string;
   description: string;
   activities: string[];
+  is_deleted?: boolean;
 }
 
 interface DateNightContentProps {

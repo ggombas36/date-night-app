@@ -9,7 +9,8 @@
         "Walk and have burger & banana pouding at Buddy's", 
         "Reach the top of the Gellért Hill", 
         "Dinner at Biang"
-      ]
+      ],
+      "is_deleted": false
     },
     {
       "id": "2025.03.28",
@@ -20,7 +21,8 @@
         "Dinner at Blue Agori – gyros galore!", 
         "Walk it off with a scenic stroll along Andrássy Avenue", 
         "Loop back, still full... still in love... still slightly smelling like oregano 😄"
-      ]
+      ],
+      "is_deleted": false
     },
     {
       "id": "2025.03.21",
@@ -34,6 +36,7 @@
         "Walk to Indigo Express (Deák) for nostalgia", 
         "Cheesecake finale",
         "Stroll home down Andrássy Avenue like the classy duo we are"
-      ]
+      ],
+      "is_deleted": false
     }
   ]

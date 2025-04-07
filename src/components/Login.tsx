@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { authService } from '../services/authService';
 import AuthButton from './AuthButton';
+import { useAuth } from '../context/AuthContext';
 
-interface LoginProps {
-  onLoginSuccess: () => void;
-}
-
-export default function Login({ onLoginSuccess }: LoginProps) {
+export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,10 +15,8 @@ export default function Login({ onLoginSuccess }: LoginProps) {
     setIsLoading(true);
 
     try {
-      const isAuthenticated = await authService.login(username, password);
-      if (isAuthenticated) {
-        onLoginSuccess();
-      } else {
+      const isAuthenticated = await login(username, password);
+      if (!isAuthenticated) {
         setError('Invalid credentials');
       }
     } catch (err) {
