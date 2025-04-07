@@ -1,19 +1,29 @@
 interface User {
   username: string;
   password: string;
+  isAdmin: boolean;
 }
 
-// Use environment variables for credentials
-const MOCK_USER: User = {
-  username: import.meta.env.VITE_AUTH_USERNAME || "admin",
-  password: import.meta.env.VITE_AUTH_PASSWORD || "datenight2024"
-};
+// Define both users
+const USERS: User[] = [
+  {
+    username: import.meta.env.VITE_AUTH_USERNAME,
+    password: import.meta.env.VITE_AUTH_PASSWORD,
+    isAdmin: false
+  },
+  {
+    username: "admin",
+    password: "20220331",
+    isAdmin: true
+  }
+];
 
-const generateToken = (): string => {
+const generateToken = (user: User): string => {
   // Simple mock JWT structure
   const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
   const payload = btoa(JSON.stringify({
-    username: MOCK_USER.username,
+    username: user.username,
+    isAdmin: user.isAdmin,
     exp: Date.now() + (4 * 60 * 60 * 1000) // 4 hours from now
   }));
   const signature = btoa('mock-signature');
@@ -25,22 +35,25 @@ export const authService = {
   login: (username: string, password: string): Promise<boolean> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const isAuthenticated = 
-          username === MOCK_USER.username && 
-          password === MOCK_USER.password;
+        // Find matching user
+        const user = USERS.find(
+          u => u.username === username && u.password === password
+        );
         
-        if (isAuthenticated) {
-          const token = generateToken();
+        if (user) {
+          const token = generateToken(user);
           localStorage.setItem('authToken', token);
+          localStorage.setItem('isAdmin', user.isAdmin.toString());
         }
         
-        resolve(isAuthenticated);
+        resolve(!!user);
       }, 500);
     });
   },
 
   logout: (): void => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('isAdmin');
   },
 
   isAuthenticated: (): boolean => {
@@ -51,6 +64,22 @@ export const authService = {
       const [, payload] = token.split('.');
       const { exp } = JSON.parse(atob(payload));
       return Date.now() < exp;
+    } catch {
+      return false;
+    }
+  },
+  
+  isAdmin: (): boolean => {
+    // First check if authenticated
+    if (!authService.isAuthenticated()) return false;
+    
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) return false;
+      
+      const [, payload] = token.split('.');
+      const { isAdmin } = JSON.parse(atob(payload));
+      return !!isAdmin;
     } catch {
       return false;
     }

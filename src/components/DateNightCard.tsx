@@ -1,4 +1,5 @@
 import React from "react";
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
 import "../styles/scrollbar.css";
 
 interface DatePlan {
@@ -7,15 +8,26 @@ interface DatePlan {
   date: string;
   description: string;
   activities: string[];
+  is_deleted?: boolean;
 }
 
 interface DateNightCardProps {
   children: React.ReactNode;
   isMobile?: boolean;
   currentPlan: DatePlan;
+  isAdmin?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-export default function DateNightCard({ children, isMobile = false, currentPlan }: DateNightCardProps) {
+export default function DateNightCard({ 
+  children, 
+  isMobile = false, 
+  currentPlan,
+  isAdmin = false,
+  onEdit,
+  onDelete
+}: DateNightCardProps) {
   // Custom style for the card
   const cardStyle = {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -31,9 +43,31 @@ export default function DateNightCard({ children, isMobile = false, currentPlan 
                  ${isMobile ? 'shadow-lg' : 'shadow-xl'}
                  transition-all duration-300 ease-in-out overflow-hidden
                  ${isMobile ? 'hover:shadow-xl' : 'hover:shadow-2xl'}
-                 flex flex-col`}
+                 flex flex-col relative`}
       style={cardStyle}
     >
+      {isAdmin && (
+        <>
+          {/* Edit button - top right */}
+          <button
+            onClick={onEdit}
+            className="absolute top-2 right-2 bg-emerald-100/50 hover:bg-emerald-100/80 p-1.5 rounded-full transition-colors z-20 cursor-pointer"
+            aria-label="Edit date plan"
+          >
+            <PencilIcon className="h-4 w-4 text-emerald-800" />
+          </button>
+          
+          {/* Delete button - top left (same position but on left) */}
+          <button
+            onClick={onDelete}
+            className="absolute top-2 left-2 bg-red-100/50 hover:bg-red-100/80 p-1.5 rounded-full transition-colors z-20 cursor-pointer"
+            aria-label="Delete date plan"
+          >
+            <TrashIcon className="h-4 w-4 text-red-600" />
+          </button>
+        </>
+      )}
+      
       <h1 className={`${isMobile ? 'text-3xl md:text-4xl' : 'text-4xl'} font-bold text-center p-6 border-b border-gray-300/30 ${textColor} flex-shrink-0`}>
         OG's Date Night App
         <div className={`text-xl mt-2 ${textColor}`}>
