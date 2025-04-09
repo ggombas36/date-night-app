@@ -1,0 +1,6 @@
+{
+    "watch": ["src/server", "src/services"],
+    "ext": ".ts,.js",
+    "ignore": ["src/**/*.spec.ts"],
+    "exec": "node --loader ts-node/esm src/server/server.ts"
+  }

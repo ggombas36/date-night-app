@@ -8,7 +8,8 @@ import Login from "../components/Login";
 import AuthButton from "../components/AuthButton";
 import datePlans from "../data/datePlans.json";
 import { useAuth } from "../context/AuthContext";
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { useApi } from "../hooks/useAPI";
 
 interface DatePlan {
   id: string;
@@ -19,65 +20,54 @@ interface DatePlan {
   is_deleted?: boolean;
 }
 
-const getInitialPlans = () => {
-  try {
-    const savedPlans = localStorage.getItem('datePlans');
-    if (savedPlans) {
-      const parsedPlans = JSON.parse(savedPlans);
-      return parsedPlans;
-    }
-  } catch (error) {
-    console.error('Error loading saved plans:', error);
-  }
-  
-  // Fallback to the imported JSON file
-  return datePlans.map(plan => ({
-    ...plan, 
-    is_deleted: plan.is_deleted || false
-  }));
-};
-
 export default function Home() {
+  const api = useApi();
+
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
-  
+
   // Initialize plans with is_deleted property if not present
-  const [plans, setPlans] = useState<DatePlan[]>(getInitialPlans());
-  
+  const [plans, setPlans] = useState<DatePlan[]>([]);
+
   const [showEditModal, setShowEditModal] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
-  
-  // Filter out deleted plans for display
-  const activePlans = plans.filter(plan => !plan.is_deleted);
+
+  const activePlans = isAdmin ? plans : plans.filter((plan) => !plan.is_deleted);
+
+  useEffect(() => {
+    const loadPlans = async () => {
+      if (isAuthenticated) {
+        try {
+          const fetchedPlans = isAdmin 
+          ? await api.getAllPlans()
+          : await api.getActivePlans();
+          if (fetchedPlans && fetchedPlans.length > 0) {
+            setPlans(fetchedPlans);
+          }
+        } catch (error) {
+          console.error("Error loading plans:", error);
+        }
+      }
+    };
+
+    loadPlans();
+  }, [isAuthenticated, isAdmin]);
 
   // Check if we're in mobile view
   useEffect(() => {
     const checkMobile = () => {
       setIsMobileView(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
+    window.addEventListener("resize", checkMobile);
+
     return () => {
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener("resize", checkMobile);
     };
   }, []);
 
-  useEffect(() => {
-    const savedPlans = localStorage.getItem('datePlans');
-    if (savedPlans) {
-      try {
-        const parsedPlans = JSON.parse(savedPlans);
-        setPlans(parsedPlans);
-      } catch (error) {
-        console.error('Error parsing saved plans:', error);
-      }
-    }
-  }, []);
-
-  // Reset current index if plans change (e.g., after delete)
   useEffect(() => {
     if (currentPlanIndex >= activePlans.length && activePlans.length > 0) {
       setCurrentPlanIndex(0);
@@ -85,11 +75,11 @@ export default function Home() {
   }, [activePlans.length, currentPlanIndex]);
 
   const handlePrevious = () => {
-    setCurrentPlanIndex(prev => Math.min(prev + 1, activePlans.length - 1));
+    setCurrentPlanIndex((prev) => Math.min(prev + 1, activePlans.length - 1));
   };
 
   const handleNext = () => {
-    setCurrentPlanIndex(prev => Math.max(prev - 1, 0));
+    setCurrentPlanIndex((prev) => Math.max(prev - 1, 0));
   };
 
   const handleEditOpen = () => {
@@ -106,56 +96,63 @@ export default function Home() {
     setShowEditModal(false);
   };
 
-  const handleDeletePlan = () => {
+  const handleDeletePlan = async () => {
     if (activePlans.length <= 1) {
-      // Don't delete the last plan
       alert("Cannot delete the last date plan.");
       return;
     }
-    
-    // Find the plan in the original array
+
     const planToDelete = activePlans[currentPlanIndex];
-    const updatedPlans = plans.map(plan => 
-      plan.id === planToDelete.id 
-        ? { ...plan, is_deleted: true } 
-        : plan
-    );
-    
-    setPlans(updatedPlans);
-    
-    // Reset to first plan if needed
-    if (currentPlanIndex >= activePlans.length - 1) {
-      setCurrentPlanIndex(0);
+    const success = await api.deletePlan(planToDelete.id);
+
+    if (success) {
+      const updatedPlans = isAdmin ? await api.getAllPlans() : await api.getActivePlans();
+      setPlans(updatedPlans);
+
+      if (currentPlanIndex >= activePlans.length - 1) {
+        setCurrentPlanIndex(0);
+      }
     }
-    
-    // Save to localStorage
-    localStorage.setItem('datePlans', JSON.stringify(updatedPlans));
   };
 
-  const handleSavePlan = (editedPlan: DatePlan) => {
-    let updatedPlans: DatePlan[];
-    
+  const handleSavePlan = async (editedPlan: DatePlan) => {
     if (isAddingNew) {
-      // Create a new date plan and add it to the beginning of the array
-      const newPlan = {
-        ...editedPlan,
-        is_deleted: false
-      };
-      updatedPlans = [newPlan, ...plans];
-      setPlans(updatedPlans);
-      setCurrentPlanIndex(0); // Switch to the newly added plan
+      const newPlan = await api.createPlan(editedPlan);
+      if (newPlan) {
+        const updatedPlans = isAdmin ? await api.getAllPlans() : await api.getActivePlans();
+        setPlans(updatedPlans);
+        setCurrentPlanIndex(0);
+      }
     } else {
-      // Update existing plan
-      updatedPlans = plans.map(plan => 
-        plan.id === activePlans[currentPlanIndex].id 
-          ? { ...editedPlan, is_deleted: false } 
-          : plan
+      const updated = await api.updatePlan(
+        activePlans[currentPlanIndex].id,
+        editedPlan
       );
-      setPlans(updatedPlans);
+      if (updated) {
+        const updatedPlans = isAdmin ? await api.getAllPlans() : await api.getActivePlans();
+        setPlans(updatedPlans);
+      }
     }
-    
-    // Save to localStorage
-    localStorage.setItem('datePlans', JSON.stringify(updatedPlans));
+
+    setShowEditModal(false);
+  };
+
+  const handleRestorePlan = async (id: string) => {
+    try {
+      const success = await api.updatePlan(id, { is_deleted: false });
+      if (success) {
+        // Fetch updated plans
+        const updatedPlans = await api.getAllPlans();
+        setPlans(updatedPlans);
+        
+        // Reset current index if needed
+        if (currentPlanIndex >= updatedPlans.length) {
+          setCurrentPlanIndex(0);
+        }
+      }
+    } catch (error) {
+      console.error("Error restoring plan:", error);
+    }
   };
 
   if (!isAuthenticated) {
@@ -180,29 +177,30 @@ export default function Home() {
     const defaultPlan: DatePlan = {
       id: new Date().toISOString(),
       title: "No Plans Available",
-      date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
-      description: "All date plans have been deleted. Add a new one to get started.",
+      date: new Date().toISOString().split("T")[0].replace(/-/g, "."),
+      description:
+        "All date plans have been deleted. Add a new one to get started.",
       activities: ["Add a new date plan"],
-      is_deleted: false
+      is_deleted: false,
     };
-    
+
     setPlans([defaultPlan, ...plans]);
     setCurrentPlanIndex(0);
-    
+
     return <div>Loading...</div>; // temporary while state updates
   }
 
   // Get the current plan to display
   const currentPlan = activePlans[currentPlanIndex];
-  
+
   // Create empty plan template for new dates
   const emptyPlan: DatePlan = {
     id: new Date().toISOString(),
     title: "",
-    date: new Date().toISOString().split('T')[0].replace(/-/g, '.'),
+    date: new Date().toISOString().split("T")[0].replace(/-/g, "."),
     description: "",
     activities: [""],
-    is_deleted: false
+    is_deleted: false,
   };
 
   return (
@@ -212,7 +210,7 @@ export default function Home() {
           © 2025.04.07. Date night app V1.2
         </span>
       </div>
-      
+
       {/* Add Date button (only visible if admin) */}
       {isAdmin && (
         <button
@@ -242,12 +240,14 @@ export default function Home() {
       >
         <AuthButton isAuthenticated={true} onLogout={logout} />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard 
-            isMobile={true} 
-            currentPlan={currentPlan} 
+          <DateNightCard
+            isMobile={true}
+            currentPlan={currentPlan}
             isAdmin={isAdmin}
             onEdit={handleEditOpen}
             onDelete={handleDeletePlan}
+            onRestore={handleRestorePlan}
+            isDeleted={currentPlan.is_deleted}
           >
             <DateNightContent
               currentPlan={currentPlan}
@@ -255,6 +255,7 @@ export default function Home() {
               onNext={handleNext}
               hasPrevious={currentPlanIndex < activePlans.length - 1}
               hasNext={currentPlanIndex > 0}
+              isDeleted={currentPlan.is_deleted}
             />
           </DateNightCard>
         </div>
@@ -267,11 +268,13 @@ export default function Home() {
       >
         <AuthButton isAuthenticated={true} onLogout={logout} />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard 
+          <DateNightCard
             currentPlan={currentPlan}
             isAdmin={isAdmin}
             onEdit={handleEditOpen}
             onDelete={handleDeletePlan}
+            onRestore={handleRestorePlan}
+            isDeleted={currentPlan.is_deleted}
           >
             <DateNightContent
               currentPlan={currentPlan}
@@ -279,6 +282,7 @@ export default function Home() {
               onNext={handleNext}
               hasPrevious={currentPlanIndex < activePlans.length - 1}
               hasNext={currentPlanIndex > 0}
+              isDeleted={currentPlan.is_deleted}
             />
           </DateNightCard>
         </div>

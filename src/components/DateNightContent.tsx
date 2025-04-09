@@ -14,6 +14,7 @@ interface DateNightContentProps {
   onNext?: () => void;
   hasPrevious: boolean;
   hasNext: boolean;
+  isDeleted?: boolean;
 }
   
 export default function DateNightContent({
@@ -21,10 +22,11 @@ export default function DateNightContent({
   onPrevious,
   onNext,
   hasPrevious,
-  hasNext
+  hasNext,
+  isDeleted = false
 }: DateNightContentProps) {
   return (
-    <div className="flex flex-col items-center w-full h-full">
+    <div className={`flex flex-col items-center w-full h-full ${isDeleted ? 'opacity-75' : ''}`}>
       {/* Title section with navigation buttons */}
       <div className="w-full relative flex justify-center items-center mb-4 px-2">
         {/* Left navigation button */}

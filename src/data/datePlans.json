@@ -1,42 +1,62 @@
 [
-    {
-      "id": "2025.04.04",
-      "title": "Cherry Blossom Adventure",
-      "date": "2025.04.04",
-      "description": "Tomorrow's date night plan: A dreamy stroll under the cherry blossoms on Gellért Hill, indulging in juicy burgers and banana pudding, and wrapping up the evening with a cozy dinner at Biang. Perfect vibes incoming! 🍒🍔🍌✨",
-      "activities": [
-        "Meet at Vörösmarty square", 
-        "Walk and have burger & banana pouding at Buddy's", 
-        "Reach the top of the Gellért Hill", 
-        "Dinner at Biang"
-      ],
-      "is_deleted": false
-    },
-    {
-      "id": "2025.03.28",
-      "title": "Greek Night Delight 🌆",
-      "date": "2025.03.28",
-      "description": "This week's date night: A flavor-packed Greek feast at Blue Agori, where the gyros are almost as hot as the date. 😏 We laughed, we feta'd, we conquered. Then came the classy post-dinner stroll down Andrássy út, pretending we were in a rom-com montage — just with more tzatziki breath. 🥙💙",
-      "activities": [
-        "Dinner at Blue Agori – gyros galore!", 
-        "Walk it off with a scenic stroll along Andrássy Avenue", 
-        "Loop back, still full... still in love... still slightly smelling like oregano 😄"
-      ],
-      "is_deleted": false
-    },
-    {
-      "id": "2025.03.21",
-      "title": "Spice, Sweets & Sidewalks 🍰🚶",
-      "date": "2025.03.21",
-      "description": "This week’s adventure: A flavorful journey through the streets and spices of the city! We kicked things off with a fiery dinner at Indigo Express near Nyugati — where every bite felt like a passport stamp to India. 🌶️🕌 Then came dessert at the fancy McDonald's (yes, the chandelier one 💁), because opposites attract. Full of curry and McFlurry, we strolled to the other Indigo Express by Deák — not for seconds, but for the vibes. Finished the night strong with a dreamy cheesecake moment, then a slow romantic walk home along Andrássy út, soaking in the city lights and our shared food coma. 🧀❤️✨",
-      "activities": [
-        "Walk to Indigo Express (Nyugati)", 
-        "Indian dinner with a side of spice", 
-        "Dessert at the bougie McDonald's", 
-        "Walk to Indigo Express (Deák) for nostalgia", 
-        "Cheesecake finale",
-        "Stroll home down Andrássy Avenue like the classy duo we are"
-      ],
-      "is_deleted": false
-    }
-  ]
+  {
+    "id": "2025-04-090",
+    "title": "a",
+    "date": "2025.04.09",
+    "description": "a",
+    "activities": [
+      "a"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025-04-09",
+    "title": "teszt date",
+    "date": "2025.04.09",
+    "description": "date",
+    "activities": [
+      "teszt"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.04.04",
+    "title": "Cherry Blossom Adventure",
+    "date": "2025.04.04",
+    "description": "Tomorrow's date night plan: A dreamy stroll under the cherry blossoms on Gellért Hill, indulging in juicy burgers and banana pudding, and wrapping up the evening with a cozy dinner at Biang. Perfect vibes incoming! 🍒🍔🍌✨",
+    "activities": [
+      "Meet at Vörösmarty square",
+      "Walk and have burger & banana pouding at Buddy's",
+      "Reach the top of the Gellért Hill",
+      "Dinner at Biang"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.03.28",
+    "title": "Greek Night Delight 🌆",
+    "date": "2025.03.28",
+    "description": "This week's date night: A flavor-packed Greek feast at Blue Agori, where the gyros are almost as hot as the date. 😏 We laughed, we feta'd, we conquered. Then came the classy post-dinner stroll down Andrássy út, pretending we were in a rom-com montage — just with more tzatziki breath. 🥙💙",
+    "activities": [
+      "Dinner at Blue Agori – gyros galore!",
+      "Walk it off with a scenic stroll along Andrássy Avenue",
+      "Loop back, still full... still in love... still slightly smelling like oregano 😄"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.03.21",
+    "title": "Spice, Sweets & Sidewalks 🍰🚶",
+    "date": "2025.03.21",
+    "description": "This week’s adventure: A flavorful journey through the streets and spices of the city! We kicked things off with a fiery dinner at Indigo Express near Nyugati — where every bite felt like a passport stamp to India. 🌶️🕌 Then came dessert at the fancy McDonald's (yes, the chandelier one 💁), because opposites attract. Full of curry and McFlurry, we strolled to the other Indigo Express by Deák — not for seconds, but for the vibes. Finished the night strong with a dreamy cheesecake moment, then a slow romantic walk home along Andrássy út, soaking in the city lights and our shared food coma. 🧀❤️✨",
+    "activities": [
+      "Walk to Indigo Express (Nyugati)",
+      "Indian dinner with a side of spice",
+      "Dessert at the bougie McDonald's",
+      "Walk to Indigo Express (Deák) for nostalgia",
+      "Cheesecake finale",
+      "Stroll home down Andrássy Avenue like the classy duo we are"
+    ],
+    "is_deleted": false
+  }
+]
