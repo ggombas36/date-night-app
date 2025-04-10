@@ -1,4 +1,4 @@
-import type { DatePlan } from '../types/datePlan';
+import type { DatePlan } from '../types/DatePlan';
 
 const API_KEY = import.meta.env.VITE_JSONBIN_API_KEY;
 const BIN_ID = import.meta.env.VITE_JSONBIN_BIN_ID;
