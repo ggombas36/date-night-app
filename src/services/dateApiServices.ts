@@ -3,6 +3,8 @@ import type { DatePlan } from '../types/DatePlan';
 const API_KEY = import.meta.env.VITE_JSONBIN_API_KEY;
 const BIN_ID = import.meta.env.VITE_JSONBIN_BIN_ID;
 
+console.log("API_KEY", API_KEY);
+
 
 const headers = {
   'Content-Type': 'application/json',

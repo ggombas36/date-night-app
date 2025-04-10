@@ -34,3 +34,5 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           VITE_AUTH_USERNAME: ${{ secrets.VITE_AUTH_USERNAME }}
           VITE_AUTH_PASSWORD: ${{ secrets.VITE_AUTH_PASSWORD }}
+          VITE_JSONBIN_API_KEY: ${{ secrets.VITE_JSONBIN_API_KEY }}
+          VITE_JSONBIN_BIN_ID: ${{ secrets.VITE_JSONBIN_BIN_ID }}
