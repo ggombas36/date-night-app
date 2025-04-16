@@ -8,8 +8,10 @@ import Login from "../components/Login";
 import AuthButton from "../components/AuthButton";
 import datePlans from "../data/datePlans.json";
 import { useAuth } from "../context/AuthContext";
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { dateApiService } from '../services/dateApiServices';
+import { dateApiService } from "../services/dateApiServices";
+import Photos from "../components/Photo"; // Make sure the path matches your file name
+import { photos } from "../data/photos";
+import { PlusIcon, PhotoIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
 
 interface DatePlan {
   id: string;
@@ -23,6 +25,11 @@ interface DatePlan {
 export default function Home() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
+  const [showPhotos, setShowPhotos] = useState(false);
+
+  const togglePhotos = () => {
+    setShowPhotos(!showPhotos);
+  };
 
   // Initialize plans with is_deleted property if not present
   const [plans, setPlans] = useState<DatePlan[]>(
@@ -32,7 +39,7 @@ export default function Home() {
     }))
   );
 
-  const version = "© 2025.04.10. Date night app V2.1.0";
+  const version = "© 2025.04.16. Date night app V2.2.0";
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -60,21 +67,25 @@ export default function Home() {
       try {
         const fetchedPlans = await dateApiService.getAllPlans();
         if (Array.isArray(fetchedPlans)) {
-          setPlans(fetchedPlans.map((plan) => ({
-            ...plan,
-            is_deleted: plan.is_deleted || false
-          })));
+          setPlans(
+            fetchedPlans.map((plan) => ({
+              ...plan,
+              is_deleted: plan.is_deleted || false,
+            }))
+          );
         }
       } catch (error) {
-        console.error('Error fetching plans:', error);
+        console.error("Error fetching plans:", error);
         // Fallback to local JSON if API fails
-        setPlans(datePlans.map((plan) => ({
-          ...plan,
-          is_deleted: plan.is_deleted || false
-        })));
+        setPlans(
+          datePlans.map((plan) => ({
+            ...plan,
+            is_deleted: plan.is_deleted || false,
+          }))
+        );
       }
     };
-  
+
     fetchPlans();
   }, []);
 
@@ -114,7 +125,7 @@ export default function Home() {
     }
 
     const planToDelete = activePlans[currentPlanIndex];
-    const updatedPlans = plans.map(plan =>
+    const updatedPlans = plans.map((plan) =>
       plan.id === planToDelete.id ? { ...plan, is_deleted: true } : plan
     );
 
@@ -137,7 +148,7 @@ export default function Home() {
       };
       updatedPlans = [newPlan, ...plans];
     } else {
-      updatedPlans = plans.map(plan =>
+      updatedPlans = plans.map((plan) =>
         plan.id === activePlans[currentPlanIndex].id
           ? { ...editedPlan, is_deleted: false }
           : plan
@@ -210,16 +221,34 @@ export default function Home() {
         </span>
       </div>
 
-      {/* Add Date button (only visible if admin) */}
-      {isAdmin && (
+      {/* Top left buttons */}
+      <div className="absolute top-4 left-4 z-10 flex gap-2">
+        {isAdmin && (
+          <button
+            onClick={handleAddNew}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded transition-colors duration-300 cursor-pointer flex items-center gap-1"
+          >
+            <PlusIcon className="h-4 w-4" />
+            Add Date
+          </button>
+        )}
         <button
-          onClick={handleAddNew}
-          className="absolute top-4 left-4 z-10 bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded transition-colors duration-300 cursor-pointer flex items-center gap-1"
+          onClick={togglePhotos}
+          className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded transition-colors duration-300 cursor-pointer flex items-center gap-1"
         >
-          <PlusIcon className="h-4 w-4" />
-          Add Date
+          {showPhotos ? (
+            <>
+              <CalendarDaysIcon className="h-4 w-4" />
+              Date Plans
+            </>
+          ) : (
+            <>
+              <PhotoIcon className="h-4 w-4" />
+              Photos
+            </>
+          )}
         </button>
-      )}
+      </div>
 
       {/* Edit/Add Modal */}
       {showEditModal && (
@@ -239,21 +268,25 @@ export default function Home() {
       >
         <AuthButton isAuthenticated={true} onLogout={logout} />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard
-            isMobile={true}
-            currentPlan={currentPlan}
-            isAdmin={isAdmin}
-            onEdit={handleEditOpen}
-            onDelete={handleDeletePlan}
-          >
-            <DateNightContent
+          {showPhotos ? (
+            <Photos photos={photos} />
+          ) : (
+            <DateNightCard
+              isMobile={true}
               currentPlan={currentPlan}
-              onPrevious={handlePrevious}
-              onNext={handleNext}
-              hasPrevious={currentPlanIndex < activePlans.length - 1}
-              hasNext={currentPlanIndex > 0}
-            />
-          </DateNightCard>
+              isAdmin={isAdmin}
+              onEdit={handleEditOpen}
+              onDelete={handleDeletePlan}
+            >
+              <DateNightContent
+                currentPlan={currentPlan}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                hasPrevious={currentPlanIndex < activePlans.length - 1}
+                hasNext={currentPlanIndex > 0}
+              />
+            </DateNightCard>
+          )}
         </div>
       </div>
 
@@ -264,20 +297,24 @@ export default function Home() {
       >
         <AuthButton isAuthenticated={true} onLogout={logout} />
         <div className="flex items-center justify-center h-full">
-          <DateNightCard
-            currentPlan={currentPlan}
-            isAdmin={isAdmin}
-            onEdit={handleEditOpen}
-            onDelete={handleDeletePlan}
-          >
-            <DateNightContent
+          {showPhotos ? (
+            <Photos photos={photos} />
+          ) : (
+            <DateNightCard
               currentPlan={currentPlan}
-              onPrevious={handlePrevious}
-              onNext={handleNext}
-              hasPrevious={currentPlanIndex < activePlans.length - 1}
-              hasNext={currentPlanIndex > 0}
-            />
-          </DateNightCard>
+              isAdmin={isAdmin}
+              onEdit={handleEditOpen}
+              onDelete={handleDeletePlan}
+            >
+              <DateNightContent
+                currentPlan={currentPlan}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                hasPrevious={currentPlanIndex < activePlans.length - 1}
+                hasNext={currentPlanIndex > 0}
+              />
+            </DateNightCard>
+          )}
         </div>
       </div>
     </>
