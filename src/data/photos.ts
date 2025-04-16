@@ -3,11 +3,11 @@ import { Photo } from '../components/Photo';
 // Import your photos or use URLs
 import photo1 from '../assets/photos/OG1.png';
 import photo2 from '../assets/photos/OG2.png';
-import photo3 from '../assets/photos/OG3.png';
+// import photo3 from '../assets/photos/OG3.png';
 import photo4 from '../assets/photos/OG4.png';
-import photo5 from '../assets/photos/OG5.png';
-import photo6 from '../assets/photos/OG6.png';
-import photo7 from '../assets/photos/OG7.png';
+// import photo5 from '../assets/photos/OG5.png';
+// import photo6 from '../assets/photos/OG6.png';
+// import photo7 from '../assets/photos/OG7.png';
 // Add more imports as needed
 
 export const photos: Photo[] = [
