@@ -39,7 +39,7 @@ export default function Home() {
     }))
   );
 
-  const version = "© 2025.04.10. Date night app V2.1.0";
+  const version = "© 2025.04.16. Date night app V2.2.0";
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
