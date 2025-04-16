@@ -3,7 +3,7 @@ import { Photo } from '../components/Photo';
 // Import your photos or use URLs
 import photo1 from '../assets/photos/OG1.png';
 import photo2 from '../assets/photos/OG2.png';
-// import photo3 from '../assets/photos/OG3.png';
+import photo3 from '../assets/photos/OG3.png';
 import photo4 from '../assets/photos/OG4.png';
 // import photo5 from '../assets/photos/OG5.png';
 // import photo6 from '../assets/photos/OG6.png';
@@ -29,12 +29,12 @@ export const photos: Photo[] = [
   //   title: 'Park Güell, Barcelona, Spain',
   //   date: '2023.11.18.'
   // },
-  // {
-  //   id: '4',
-  //   path: photo3,
-  //   title: 'Chefchauen, Morocco',
-  //   date: '2024.03.21.'
-  // },
+   {
+    id: '4',
+    path: photo3,
+    title: 'Chefchauen, Morocco',
+    date: '2024.03.21.'
+  },
   {
     id: '5',
     path: photo2,
