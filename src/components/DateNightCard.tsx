@@ -20,6 +20,7 @@ interface DateOption {
   image: string;
   link: string;
   location: string;
+  edited: boolean;
 }
 
 interface DateNightCardProps {
