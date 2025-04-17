@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/scrollbar.css";
-import {dateApiService} from "../services/dateApiServices";
+import { dateApiService } from "../services/dateApiServices";
 
 interface DateOption {
   id: string;
@@ -10,49 +10,20 @@ interface DateOption {
   image: string;
   link: string;
   location: string;
+  edited: boolean;
 }
 
 interface DateOptionsProps {
-    options: DateOption[];
-    setOptions: (options: DateOption[]) => void;
-  }
-
-// const initialOptions: DateOption[] = [
-//   {
-//     id: "1",
-//     title: "Wafu Ramen",
-//     info: "Asian fusion restaurant with authentic Japanese flavors. Perfect for a casual dinner date with a modeAsian fusion restaurant with authentic Japanese flavors. Perfect for a casual dinner date with a modern atmosphere. Located in the heart of the city.rn atmosphere. Located in the heart of the city.Asian fusion restaurant with authentic Japanese flavors. Perfect for a casual dinner date with a modern atmosphere. Located in the heart of the city.Asian fusion restaurant with authentic Japanese flavors. Perfect for a casual dinner date with a modern atmosphere. Located in the heart of the city.",
-//     selected: false,
-//     image: "https://imageproxy.wolt.com/assets/67c722938e812703640da271",
-//     link: "https://www.instagram.com/wafu_japaneseizakaya_/",
-//     location: "Budapest, Katona József u 24, 1137",
-//   },
-//   {
-//     id: "2",
-//     title: "Bellozzo",
-//     info: "Elegant fine dining experience with a seasonal menu. Romantic atmosphere with candlelight and soft music. Wine pairing available.",
-//     selected: false,
-//     image:
-//       "https://www.bellozzo.hu/files/images/site/openpics/480/primavera.jpg",
-//     link: "https://www.instagram.com/bellozzo/?hl=hu",
-//     location: "Budapest, Oktogon 1, 1066",
-//   },
-//   {
-//     id: "3",
-//     title: "101 BAO",
-//     info: "Rustic Italian cuisine in a vibrant setting. Famous for their handmade pasta and sharing platters. Great for interactive dining experience.",
-//     selected: false,
-//     image:
-//       "https://lh3.googleusercontent.com/p/AF1QipN3IF75z1Lz3BfnAVm_4GnVBWuak506BqOjZPDm=s1360-w1360-h1020",
-//     link: "https://www.instagram.com/101bao.budapest/",
-//     location: "Budapest, Kazinczy u. 18, 1075",
-//   },
-// ];
+  options: DateOption[];
+  setOptions: (options: DateOption[]) => void;
+}
 
 const DateOptions: React.FC<DateOptionsProps> = ({ options, setOptions }) => {
-    const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const areOptionsEdited = options.every((opt) => opt.edited);
 
   const handleCardClick = (id: string) => {
     setExpandedIds((prev) => {
@@ -68,23 +39,32 @@ const DateOptions: React.FC<DateOptionsProps> = ({ options, setOptions }) => {
 
   const handleSelect = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const updatedOptions = options.map((option) => ({
-      ...option,
-      selected: option.id === id,
-    }));
-    setOptions(updatedOptions);
+    if (!areOptionsEdited) {
+      const updatedOptions = options.map((option) => ({
+        ...option,
+        selected: option.id === id,
+      }));
+      setOptions(updatedOptions);
+    }
   };
 
   const handleSave = async () => {
     try {
       setIsLoading(true);
-      const success = await dateApiService.updateOptions(options);
+
+      const updatedOptions = options.map((option) => ({
+        ...option,
+        edited: true,
+      }));
+
+      const success = await dateApiService.updateOptions(updatedOptions);
       if (!success) {
-        throw new Error('Failed to update options');
+        throw new Error("Failed to update options");
       }
       // Optional: Show success message
+      setOptions(updatedOptions);
     } catch (err) {
-      setError('Failed to save selection');
+      setError("Failed to save selection");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -199,14 +179,24 @@ const DateOptions: React.FC<DateOptionsProps> = ({ options, setOptions }) => {
       <div className="flex justify-center p-2 border-t border-gray-300/30">
         <button
           onClick={handleSave}
-          disabled={isLoading || !options.some(opt => opt.selected)}
+          disabled={
+            isLoading ||
+            !options.some((opt) => opt.selected) ||
+            areOptionsEdited
+          }
           className={`w-48 ${
-            isLoading || !options.some(opt => opt.selected)
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-emerald-600 hover:bg-emerald-700'
+            isLoading ||
+            !options.some((opt) => opt.selected) ||
+            areOptionsEdited
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-emerald-600 hover:bg-emerald-700"
           } text-white py-2 rounded-md transition-colors`}
         >
-          {isLoading ? 'Saving...' : 'Save Selection'}
+          {isLoading
+            ? "Saving..."
+            : areOptionsEdited
+            ? "Selection Saved"
+            : "Save Selection"}
         </button>
       </div>
       {error && (

@@ -3,7 +3,7 @@ import type { DateOption } from '../types/DateOption';
 
 const API_KEY = import.meta.env.VITE_JSONBIN_API_KEY;
 const BIN_ID = import.meta.env.VITE_JSONBIN_BIN_ID;
-const OPTIONS_BIN_ID = "67ffb2238960c979a5867459";
+const OPTIONS_BIN_ID = import.meta.env.VITE_JSONBIN_OPTION_BIN_ID;
 
 
 

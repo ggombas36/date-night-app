@@ -6,4 +6,5 @@ export interface DateOption {
     image: string;
     link: string;
     location: string;
+    edited: boolean;
   }
