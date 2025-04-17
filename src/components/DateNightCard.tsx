@@ -1,6 +1,7 @@
-import React from "react";
-import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid';
+import React, { useState } from "react";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import "../styles/scrollbar.css";
+import DateOptions from "./DateOptions";
 
 interface DatePlan {
   id: string;
@@ -11,6 +12,17 @@ interface DatePlan {
   is_deleted?: boolean;
 }
 
+interface DateOption {
+  id: string;
+  title: string;
+  info: string;
+  selected: boolean;
+  image: string;
+  link: string;
+  location: string;
+  edited: boolean;
+}
+
 interface DateNightCardProps {
   children: React.ReactNode;
   isMobile?: boolean;
@@ -18,31 +30,38 @@ interface DateNightCardProps {
   isAdmin?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
+  options: DateOption[];
+  setOptions: (options: DateOption[]) => void;
 }
 
-export default function DateNightCard({ 
-  children, 
-  isMobile = false, 
+export default function DateNightCard({
+  children,
+  isMobile = false,
   currentPlan,
   isAdmin = false,
   onEdit,
-  onDelete
+  onDelete,
+  options,
+  setOptions,
 }: DateNightCardProps) {
-  // Custom style for the card
+  const [activeTab, setActiveTab] = useState<"plan" | "selector">("plan");
+
   const cardStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    backdropFilter: 'blur(4px)',
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backdropFilter: "blur(4px)",
   };
 
   // Dark green color for text
   const textColor = "text-emerald-800";
 
   return (
-    <div 
-      className={`${isMobile ? 'h-[90vh] w-[95vw] mt-15' : 'h-[95vh] w-[60vw] max-w-xl'} rounded-xl 
-                 ${isMobile ? 'shadow-lg' : 'shadow-xl'}
+    <div
+      className={`${
+        isMobile ? "h-[90vh] w-[95vw] mt-15" : "h-[95vh] w-[60vw] max-w-xl"
+      } rounded-xl 
+                 ${isMobile ? "shadow-lg" : "shadow-xl"}
                  transition-all duration-300 ease-in-out overflow-hidden
-                 ${isMobile ? 'hover:shadow-xl' : 'hover:shadow-2xl'}
+                 ${isMobile ? "hover:shadow-xl" : "hover:shadow-2xl"}
                  flex flex-col relative`}
       style={cardStyle}
     >
@@ -56,7 +75,7 @@ export default function DateNightCard({
           >
             <PencilIcon className="h-4 w-4 text-emerald-800" />
           </button>
-          
+
           {/* Delete button - top left (same position but on left) */}
           <button
             onClick={onDelete}
@@ -67,19 +86,49 @@ export default function DateNightCard({
           </button>
         </>
       )}
-      
-      <h1 className={`${isMobile ? 'text-3xl md:text-4xl' : 'text-4xl'} font-bold text-center p-6 border-b border-gray-300/30 ${textColor} flex-shrink-0`}>
+
+      <h1
+        className={`${
+          isMobile ? "text-3xl md:text-4xl" : "text-4xl"
+        } font-bold text-center p-2 border-b border-gray-300/30 ${textColor} flex-shrink-0`}
+      >
         OG's Date Night App
-        <div className={`text-xl mt-2 ${textColor}`}>
-          {currentPlan.date}
-        </div>
+        <div className={`text-xl mt-2 ${textColor}`}>{currentPlan.date}</div>
       </h1>
       <div className="flex-1 overflow-hidden flex items-start justify-center">
-        <div 
-          className={`w-full h-full overflow-y-auto p-2 ${textColor} custom-scrollbar`}
+        <div
+          className={`w-full h-full overflow-y-auto px-2 pt-2 pb-4 ${textColor} custom-scrollbar`}
         >
-          {children}
+          {activeTab === "plan" ? (
+            children
+          ) : (
+            <DateOptions options={options} setOptions={setOptions} />
+          )}
         </div>
+      </div>
+
+      {/* Tab selector */}
+      <div className="flex w-full border-t border-gray-300/30">
+        <button
+          onClick={() => setActiveTab("plan")}
+          className={`flex-1 py-2 text-center transition-colors ${
+            activeTab === "plan"
+              ? "bg-emerald-600 text-white"
+              : "text-emerald-800 hover:bg-emerald-50"
+          }`}
+        >
+          Date Night Plan
+        </button>
+        <button
+          onClick={() => setActiveTab("selector")}
+          className={`flex-1 py-2 text-center transition-colors ${
+            activeTab === "selector"
+              ? "bg-emerald-600 text-white"
+              : "text-emerald-800 hover:bg-emerald-50"
+          }`}
+        >
+          Date Night Selector
+        </button>
       </div>
     </div>
   );

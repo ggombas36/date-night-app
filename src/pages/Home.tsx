@@ -22,10 +22,22 @@ interface DatePlan {
   is_deleted?: boolean;
 }
 
+interface DateOption {
+  id: string;
+  title: string;
+  info: string;
+  selected: boolean;
+  image: string;
+  link: string;
+  location: string;
+  edited: boolean;
+}
+
 export default function Home() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
   const [showPhotos, setShowPhotos] = useState(false);
+  const [options, setOptions] = useState<DateOption[]>([]);
 
   const togglePhotos = () => {
     setShowPhotos(!showPhotos);
@@ -39,7 +51,7 @@ export default function Home() {
     }))
   );
 
-  const version = "© 2025.04.16. Date night app V2.2.0";
+  const version = "© 2025.04.17. Date night app V2.3.1";
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
@@ -87,6 +99,23 @@ export default function Home() {
     };
 
     fetchPlans();
+  }, []);
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const fetchedOptions = await dateApiService.getAllOptions();
+        if (Array.isArray(fetchedOptions)) {
+          setOptions(fetchedOptions);
+        }
+      } catch (error) {
+        console.error("Error fetching options:", error);
+        // // Fallback to local JSON if API fails
+        // setOptions(dateOptions);
+      }
+    };
+
+    fetchOptions();
   }, []);
 
   // Reset current index if plans change (e.g., after delete)
@@ -277,6 +306,8 @@ export default function Home() {
               isAdmin={isAdmin}
               onEdit={handleEditOpen}
               onDelete={handleDeletePlan}
+              options={options}
+              setOptions={setOptions}
             >
               <DateNightContent
                 currentPlan={currentPlan}
@@ -305,6 +336,8 @@ export default function Home() {
               isAdmin={isAdmin}
               onEdit={handleEditOpen}
               onDelete={handleDeletePlan}
+              options={options}
+              setOptions={setOptions}
             >
               <DateNightContent
                 currentPlan={currentPlan}
