@@ -36,3 +36,4 @@ jobs:
           VITE_AUTH_PASSWORD: ${{ secrets.VITE_AUTH_PASSWORD }}
           VITE_JSONBIN_API_KEY: ${{ secrets.VITE_JSONBIN_API_KEY }}
           VITE_JSONBIN_BIN_ID: ${{ secrets.VITE_JSONBIN_BIN_ID }}
+          VITE_JSONBIN_OPTION_BIN_ID: ${{ secrets.VITE_JSONBIN_OPTION_BIN_ID }}
