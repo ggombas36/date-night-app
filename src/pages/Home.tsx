@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import desktopBackground from "../assets/background/week_1_desktop.png";
-import mobileBackground from "../assets/background/week_1_phone.png";
+import desktopBackground from "../assets/background/week_5_desktop.png";
+import mobileBackground from "../assets/background/week_5_phone.png";
 import DateNightCard from "../components/DateNightCard";
 import DateNightContent from "../components/DateNightContent";
 import EditModal from "../components/EditModal";
@@ -51,7 +51,7 @@ export default function Home() {
     }))
   );
 
-  const version = "© 2025.04.17. Date night app V2.3.1";
+  const version = "© 2025.04.23. Date night app V2.3.1";
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [isAddingNew, setIsAddingNew] = useState(false);
