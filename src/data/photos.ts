@@ -10,10 +10,12 @@ import photo6 from '../assets/photos/OG6.png';
 import photo7 from '../assets/photos/OG7.png';
 // import photo8 from '../assets/photos/OG8.png';
 import photo9 from '../assets/photos/OG9.png';
-// import photo10 from '../assets/photos/OG10.png';
-// import photo11 from '../assets/photos/OG11.png';
+import photo10 from '../assets/photos/OG10.png';
+import photo11 from '../assets/photos/OG11.png';
 // import photo12 from '../assets/photos/OG12.png';
 // import photo13 from '../assets/photos/OG13.png';
+// import photo14 from '../assets/photos/OG14.png';
+import photo15 from '../assets/photos/OG15.png';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -23,12 +25,12 @@ export const photos: Photo[] = [
     title: 'First Photo Shoot',
     date: '2022.06'
   },
-  // {
-  //   id: '2',
-  //   path: photo10,
-  //   title: 'Braga, Portugal',
-  //   date: '2023.05.07.'
-  // },
+  {
+    id: '2',
+    path: photo10,
+    title: 'Braga, Portugal',
+    date: '2023.05.07.'
+  },
   // {
   //   id: '3',
   //   path: photo13,
@@ -41,6 +43,12 @@ export const photos: Photo[] = [
     title: 'Second Photo Shoot',
     date: '2023.06'
   },
+  // {
+  //   id: '14',
+  //   path: photo14,
+  //   title: 'Rialto Bridge, Venice, Italy',
+  //   date: '2023.08.11.'
+  // },
   {
     id: '5',
     path: photo5,
@@ -89,11 +97,17 @@ export const photos: Photo[] = [
     title: 'Milan, Italy',
     date: '2025.04.05.'
   },
-  // {
-  //   id: '13',
-  //   path: photo11,
-  //   title: 'Milan, Italy',
-  //   date: '2025.04.05.'
-  // },
+  {
+    id: '13',
+    path: photo11,
+    title: 'Blossoms & Broth: A Spring Daydream 🌸🍜',
+    date: '2025.04.18.'
+  },
+  {
+    id: '15',
+    path: photo15,
+    title: 'Primavera & Park Strolls 🌸👜🍝',
+    date: '2025.04.25.'
+  },
   // Add more photos as needed
 ];
