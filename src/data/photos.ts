@@ -14,8 +14,10 @@ import photo10 from '../assets/photos/OG10.png';
 import photo11 from '../assets/photos/OG11.png';
 // import photo12 from '../assets/photos/OG12.png';
 // import photo13 from '../assets/photos/OG13.png';
-// import photo14 from '../assets/photos/OG14.png';
+import photo14 from '../assets/photos/OG14.png';
 import photo15 from '../assets/photos/OG15.png';
+import photo16 from '../assets/photos/OG16.png';
+// import photo17 from '../assets/photos/OG17.png';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -43,12 +45,12 @@ export const photos: Photo[] = [
     title: 'Second Photo Shoot',
     date: '2023.06'
   },
-  // {
-  //   id: '14',
-  //   path: photo14,
-  //   title: 'Rialto Bridge, Venice, Italy',
-  //   date: '2023.08.11.'
-  // },
+  {
+    id: '14',
+    path: photo14,
+    title: 'Rialto Bridge, Venice, Italy',
+    date: '2023.08.11.'
+  },
   {
     id: '5',
     path: photo5,
@@ -109,5 +111,17 @@ export const photos: Photo[] = [
     title: 'Primavera & Park Strolls 🌸👜🍝',
     date: '2025.04.25.'
   },
+  {
+    id: '16',
+    path: photo16,
+    title: 'Blue Lagoon, Malta',
+    date: '2025.05.03.'
+  },
+  // {
+  //   id: '17',
+  //   path: photo17,
+  //   title: 'Near St. Peter's Pool, Malta',
+  //   date: '2025.04.25.'
+  // },
   // Add more photos as needed
 ];

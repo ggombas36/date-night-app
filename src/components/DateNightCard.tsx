@@ -108,7 +108,7 @@ export default function DateNightCard({
       </div>
 
       {/* Tab selector */}
-      <div className="hidden flex w-full border-t border-gray-300/30">
+      <div className="flex w-full border-t border-gray-300/30">
         <button
           onClick={() => setActiveTab("plan")}
           className={`flex-1 py-2 text-center transition-colors ${
