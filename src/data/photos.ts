@@ -18,8 +18,8 @@ import photo14 from '../assets/photos/OG14.png';
 import photo15 from '../assets/photos/OG15.png';
 import photo16 from '../assets/photos/OG16.png';
 import photo17 from '../assets/photos/OG17.png';
-// import photo18 from '../assets/photos/OG18.png';
-// import photo19 from '../assets/photos/OG19.png';
+import photo18 from '../assets/photos/OG18.png';
+import photo19 from '../assets/photos/OG19.png';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -53,12 +53,12 @@ export const photos: Photo[] = [
     title: 'Rialto Bridge, Venice, Italy',
     date: '2023.08.11.'
   },
-  // {
-  //   id: '19',
-  //   path: photo19,
-  //   title: 'Lindt factory, Zürrich, Switzerland',
-  //   date: '2023.11.08.'
-  // },
+  {
+    id: '19',
+    path: photo19,
+    title: 'Lindt factory, Zürrich, Switzerland',
+    date: '2023.11.08.'
+  },
   {
     id: '5',
     path: photo5,
@@ -131,11 +131,11 @@ export const photos: Photo[] = [
     title: "Near St. Peter's Pool, Malta",
     date: '2025.05.04.'
   },
-  // {
-  //   id: '18',
-  //   path: photo18,
-  //   title: "Shine & Stroll: A Night of Jewels and Wonder💎🌙",
-  //   date: '2025.05.09.'
-  // },
+  {
+    id: '18',
+    path: photo18,
+    title: "Shine & Stroll: A Night of Jewels and Wonder💎🌙",
+    date: '2025.05.09.'
+  },
   // Add more photos as needed
 ];
