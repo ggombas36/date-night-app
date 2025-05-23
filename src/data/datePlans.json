@@ -1,12 +1,89 @@
 [
   {
+    "id": "2025.05.26",
+    "title": "Berry Bliss or Bejeweled Rain Plan 🍓💎🌦️",
+    "date": "2025.05.26",
+    "description": "This Sunday, it’s all about sweet spontaneity — with sunshine we’ll chase strawberries, and with raindrops we’ll dive into diamonds. 🍓🌧️💍 Plan A? A charming countryside escape to pick ripe strawberries straight from the vine — red fingertips, laughter in the rows, and baskets brimming with summer. But if the skies turn gray, fear not! We’ll head instead to the Hungarian National Museum to finally catch the 'Shine! – The Time of Jewels' exhibition and bask in stories told through gold, gems, and time itself. Whichever path we take, the evening ends with golden crispiness: dinner at a cozy Pesti Pipi spot of our choosing. Because whether it’s berries or brilliance — we always make it sparkle. ✨",
+    "activities": [
+      "Morning decision: sunshine or sprinkles?",
+      "Plan A: Head out of town for a strawberry-picking adventure",
+      "Fill baskets, taste summer, snap some juicy pics 📸🍓",
+      "Plan B (rainy day): Visit the Hungarian National Museum",
+      "Explore the ‘Shine! – The Time of Jewels’ exhibition we missed last time",
+      "Marvel at stories told through gold, hair, and history",
+      "Dinner at Pesti Pipi — crispy bites and cozy vibes"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.05.16",
+    "title": "Wings & Warm Broth 🦋🍜",
+    "date": "2025.05.16",
+    "description": "A gentle escape into fluttering colors and fragrant steam. Just bring your smile — everything else is taken care of. 🌸",
+    "activities": [
+      "Meet for an afternoon stroll through a tropical secret",
+      "Get lost among butterflies and blooming green",
+      "Wrap up the evening with a cozy bowl of pho at a hidden gem"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.05.09",
+    "title": "Shine & Stroll: A Night of Jewels and Wonder 💎🌙",
+    "date": "2025.05.09",
+    "description": "This Friday’s plan is all about sparkle, history, and a touch of elegance. ✨ We’ll meet at 5 PM at Vörösmarty Square, then head home to get ready for an evening full of fascination. The main event? A visit to the ‘Shine! – The Time of Jewels’ exhibition at the Hungarian National Museum. Set in a beautiful historic setting, this special showcase spans 40,000 years of jewelry — from ancient gold treasures and medieval gems to 19th-century reimagined masterpieces and even hauntingly personal pieces made from horseshoe nails and human hair. More than just decoration, each piece tells a story of identity, memory, and meaning. It's a glittering journey through time and style — and the perfect excuse to get a little dressed up. 💫👗 After the exhibition, dinner is on the agenda — and Kicsi gets to choose the place this time! 🍽️💖",
+    "activities": [
+      "Meet at 5 PM at Vörösmarty Square",
+      "Walk or take public transport home to change",
+      "Visit the Hungarian National Museum",
+      "Explore the 'Shine! – The Time of Jewels' exhibition",
+      "Marvel at historic treasures and symbolic gems",
+      "Dinner at a place of Kicsi's choice",
+      "Enjoy a reflective walk afterward, glowing from all the inspiration"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.04.25",
+    "title": "Primavera & Park Strolls 🌸👜🍝",
+    "date": "2025.04.25",
+    "description": "This Friday’s plan is all about springtime vibes and pasta dreams. 🌷 We’ll meet at 5 PM at Vörösmarty Square, then make our way home — either by foot or hopping on public transport. After freshening up, it’s off to Bikás Park for a light stroll beneath the blooming trees and to soak in the golden hour light. Then comes our urban adventure at Etele Plaza: a little retail therapy to spark joy 🛍️, followed by a delicious dinner at Bellozzo. The highlight? Kicsi is diving into their newest seasonal treat — the fresh and fabulous primavera pasta. A perfect spring evening in the city! ✨🌆",
+    "activities": [
+      "Meet at 5 PM at Vörösmarty Square",
+      "Walk or take public transport home",
+      "Head to Bikás Park via public transport",
+      "Enjoy a relaxing stroll in the park",
+      "Explore Etele Plaza – shopping spree time!",
+      "Dinner at Bellozzo",
+      "Try the new primavera pasta 🌸🍝"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.04.18",
+    "title": "Blossoms & Broth: A Spring Daydream 🌸🍜",
+    "date": "2025.04.18",
+    "description": "This Friday, we’re trading the city buzz for cherry blossom serenity and savory ramen delights. 🌸 After a chill lunch at home, we’ll head out to Millenáris Park to take in the spring air and stroll among the blooming trees. Then it’s off to the Castle District — either on foot or with a little help from public transport — where Tóth Árpád sétány awaits with its iconic pink blossoms and panoramic views. We'll wander past the historic charm of the Buda Castle, then descend to the riverside for a breezy walk. The perfect finale? A cozy dinner at Wafu Ramen, where every bite warms the soul. 🌆🍥💖",
+    "activities": [
+      "Leave after lunch and head to Millenáris Park",
+      "Explore the park and enjoy the cherry blossoms",
+      "Travel to the Castle District (walking or public transport)",
+      "Stroll along Tóth Árpád sétány under the cherry blossoms",
+      "Visit the Buda Castle area",
+      "Walk down to the riverside",
+      "Dinner at Wafu Ramen – ramen & noodle night!"
+    ],
+    "is_deleted": false
+  },
+  {
     "id": "2025.04.11",
-    "title": "Cartful of Joy: Kicsi Shopping Night 🛍️✨",
+    "title": "Cartful of Joy:  Kicsi's Shopping Night 🛍️✨",
     "date": "2025.04.11",
-    "description": "This Friday’s date night is less about fine dining and more about shopping galore — just the way Kicsi likes it! ✨ Starting off at Vörösmarty Square, we'll head home to grab our bags and prep for a serious shopping mission. First stop: Arena Mall and Primark — where the deals are hot and the style is even hotter. Then we’ll swing by Praktiker next to Lurdy Ház for a practical pause, and end the spree strolling through Lurdy for any last finds. It’s shopping, bonding, and budget-blowing all in one. 🛒💸",
+    "description": "This Friday’s date night is less about fine dining and more about shopping galore — just the way Kicsi likes it! ✨ Starting off at Vörösmarty Square, we'll head home to grab our bags and prep for a serious shopping mission. First stop: Arena Mall for a sweet treat — we’ll try the Easter Matcha Macchiato and the Dubai-style Pistachio Chocolate Kadayif Latte. Then it’s on to Primark, where the deals are hot and the style is even hotter. After that, we’ll swing by Praktiker next to Lurdy Ház for a practical pause, and end the spree strolling through Lurdy for any last finds. It’s shopping, bonding, and budget-blowing all in one. 🛒💸",
     "activities": [
       "Meet at Vörösmarty Square",
       "Head home to get ready for shopping",
+      "Arena Mall – try the Easter Matcha Macchiato and Dubai-style Pistachio Chocolate Kadayif Latte",
       "Arena Mall – Primark adventure begins",
       "Visit Praktiker near Lurdy Ház",
       "Final shopping stroll through Lurdy"
@@ -19,9 +96,9 @@
     "date": "2025.04.04",
     "description": "Tomorrow's date night plan: A dreamy stroll under the cherry blossoms on Gellért Hill, indulging in juicy burgers and banana pudding, and wrapping up the evening with a cozy dinner at Biang. Perfect vibes incoming! 🍒🍔🍌✨",
     "activities": [
-      "Meet at Vörösmarty Square", 
-      "Walk and have burger & banana pudding at Buddy's", 
-      "Reach the top of the Gellért Hill", 
+      "Meet at Vörösmarty Square",
+      "Walk and have burger & banana pudding at Buddy's",
+      "Reach the top of the Gellért Hill",
       "Dinner at Biang"
     ],
     "is_deleted": false
@@ -32,8 +109,8 @@
     "date": "2025.03.28",
     "description": "This week's date night: A flavor-packed Greek feast at Blue Agori, where the gyros are almost as hot as the date. 😏 We laughed, we feta'd, we conquered. Then came the classy post-dinner stroll down Andrássy út, pretending we were in a rom-com montage — just with more tzatziki breath. 🥙💙",
     "activities": [
-      "Dinner at Blue Agori – gyros galore!", 
-      "Walk it off with a scenic stroll along Andrássy Avenue", 
+      "Dinner at Blue Agori – gyros galore!",
+      "Walk it off with a scenic stroll along Andrássy Avenue",
       "Loop back, still full... still in love... still slightly smelling like oregano 😄"
     ],
     "is_deleted": false
@@ -44,10 +121,10 @@
     "date": "2025.03.21",
     "description": "This week’s adventure: A flavorful journey through the streets and spices of the city! We kicked things off with a fiery dinner at Indigo Express near Nyugati — where every bite felt like a passport stamp to India. 🌶️🕌 Then came dessert at the fancy McDonald's (yes, the chandelier one 💁), because opposites attract. Full of curry and McFlurry, we strolled to the other Indigo Express by Deák — not for seconds, but for the vibes. Finished the night strong with a dreamy cheesecake moment, then a slow romantic walk home along Andrássy út, soaking in the city lights and our shared food coma. 🧀❤️✨",
     "activities": [
-      "Walk to Indigo Express (Nyugati)", 
-      "Indian dinner with a side of spice", 
-      "Dessert at the bougie McDonald's", 
-      "Walk to Indigo Express (Deák) for nostalgia", 
+      "Walk to Indigo Express (Nyugati)",
+      "Indian dinner with a side of spice",
+      "Dessert at the bougie McDonald's",
+      "Walk to Indigo Express (Deák) for nostalgia",
       "Cheesecake finale",
       "Stroll home down Andrássy Avenue like the classy duo we are"
     ],
