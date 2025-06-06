@@ -8,12 +8,12 @@ import photo4 from '../assets/photos/OG4.png';
 import photo5 from '../assets/photos/OG5.png';
 import photo6 from '../assets/photos/OG6.png';
 import photo7 from '../assets/photos/OG7.png';
-// import photo8 from '../assets/photos/OG8.png';
+import photo8 from '../assets/photos/OG8.png';
 import photo9 from '../assets/photos/OG9.png';
 import photo10 from '../assets/photos/OG10.png';
 import photo11 from '../assets/photos/OG11.png';
 import photo12 from '../assets/photos/OG12.png';
-// import photo13 from '../assets/photos/OG13.png';
+import photo13 from '../assets/photos/OG13.png';
 import photo14 from '../assets/photos/OG14.png';
 import photo15 from '../assets/photos/OG15.png';
 import photo16 from '../assets/photos/OG16.png';
@@ -35,12 +35,12 @@ export const photos: Photo[] = [
     title: 'Braga, Portugal',
     date: '2023.05.07.'
   },
-  // {
-  //   id: '3',
-  //   path: photo13,
-  //   title: 'Esposende Beach, Portugal',
-  //   date: '2023.05.09.'
-  // },
+  {
+    id: '3',
+    path: photo13,
+    title: 'Esposende Beach, Portugal',
+    date: '2023.05.09.'
+  },
   {
     id: '4',
     path: photo6,
@@ -77,12 +77,12 @@ export const photos: Photo[] = [
     title: 'Chefchauen, Morocco',
     date: '2024.03.21.'
   },
-  // {
-  //   id: '8',
-  //   path: photo8,
-  //   title: 'Lagos, Algarve, Portugal',
-  //   date: '2024.05.11.'
-  // },
+  {
+    id: '8',
+    path: photo8,
+    title: 'Lagos, Algarve, Portugal',
+    date: '2024.05.11.'
+  },
   {
     id: '9',
     path: photo2,
