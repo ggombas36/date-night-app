@@ -20,6 +20,8 @@ import photo16 from '../assets/photos/OG16.png';
 import photo17 from '../assets/photos/OG17.png';
 import photo18 from '../assets/photos/OG18.png';
 import photo19 from '../assets/photos/OG19.png';
+import photo20 from '../assets/photos/OG20.png';
+import photo21 from '../assets/photos/OG21.png';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -136,6 +138,18 @@ export const photos: Photo[] = [
     path: photo18,
     title: "Shine & Stroll: A Night of Jewels and Wonder💎🌙",
     date: '2025.05.09.'
+  },
+  {
+    id: '20',
+    path: photo20,
+    title: "Strawberry Fields🍓🌸",
+    date: '2025.06.07.'
+  },
+  {
+    id: '21',
+    path: photo21,
+    title: "Blue Eye, Albania",
+    date: '2025.06.28.'
   },
   // Add more photos as needed
 ];

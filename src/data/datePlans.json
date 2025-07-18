@@ -1,5 +1,39 @@
 [
   {
+    "id": "2025.07.18",
+    "title": "Velvet Evenings & Secret Cravings 💙🥩🌌",
+    "date": "2025.07.18",
+    "description": "Tonight, we’re stepping into a world of refined allure and long-awaited indulgence. ✨ As tradition dictates, we’ll rendezvous at 5 PM by the lion-guarded charm of Vörösmarty Square, then begin a graceful stroll home — a slow unraveling of the day, step by step. Once there, the transformation begins: Kicsi embarks on a mission of elegance, selecting from hidden treasures and beloved pieces to craft the perfect look. The dress code? Dashing. Think dark tones, polished silhouettes, and a hint of blue — for mystery, for magnetism, for mischief. 😉👗🖤  And then — the moment we’ve been anticipating: we head out to a nearby gem we’ve long kept on our list, finally ready to cross its threshold. The ambiance whispers sophistication, and the menu? It tempts with sizzling wings or perhaps a perfectly seared steak… still up for debate. 🤔🍗🥩  After dinner, the evening won't simply end — we’ll extend it just a little longer, wandering into the night, letting city lights and soft silence accompany us. No rush. Just two well-dressed hearts, full bellies, and the comforting promise of rest at the end of a velvet-smooth night. 🌃💤",
+    "activities": [
+      "Meet at 5 PM at Vörösmarty Square",
+      "Leisurely walk home, soaking in the evening air",
+      "Kicsi curates an elegant dinner outfit (restaurant-chic vibes)",
+      "Dress code: darker tones, classy touch, hint of blue 😉",
+      "Visit a nearby fancy restaurant we’ve long wanted to try",
+      "Main course: either crispy wings or a juicy steak 🤔",
+      "Post-dinner stroll to top off the steps",
+      "Unwind and relax at home"
+    ],
+    "is_deleted": false
+  },
+  {
+    "id": "2025.06.21",
+    "title": "Island Wanderlust: Margitszigeti Felfedezők 🌿👟🍦",
+    "date": "2025.06.20",
+    "description": "This Friday, we’re setting our sights on nature, novelty, and a whole lot of steps! 🏞️ The journey begins as usual with a 5 PM meet-up at Vörösmarty Square, followed by a leisurely walk home. There, Kicsi will switch into something comfy and sporty — because tonight's adventure calls for movement and momentum. 🧢👟 Once we're ready, it's off to explore the full beauty of Margaret Island. From quiet paths and secret gardens to long strolls and laughter breaks, we'll circle the island, take in the sights, and relax in the lush green calm. 🌳✨ Along the way, there’s always time for a little indulgence — maybe a scoop of ice cream or a quick coffee wink wink. 🍦😉 And on our way back home, we’ll stop by QQExpress for a DIY noodle dinner to fuel our post-walk glow. A perfect summer night of discovery, simplicity, and smiles.",
+    "activities": [
+      "Meet at 5 PM at Vörösmarty Square",
+      "Walk home together",
+      "Change into sporty & comfy outfits (especially Kicsi!)",
+      "Head out for an exploration walk to Margaret Island",
+      "Walk the full island circuit, relax and enjoy the greenery",
+      "Optional ice cream or coffee break during the stroll",
+      "Stop at QQExpress for a cozy 'make-your-own-noodle' dinner",
+      "Head home happy and full of island magic"
+    ],
+    "is_deleted": false
+  },
+  {
     "id": "2025.06.13",
     "title": "Mystery & Moonlight: Elegant Escape Edition 🌙👠🎩",
     "date": "2025.06.13",
