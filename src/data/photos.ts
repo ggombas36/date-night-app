@@ -22,6 +22,7 @@ import photo18 from '../assets/photos/OG18.png';
 import photo19 from '../assets/photos/OG19.png';
 import photo20 from '../assets/photos/OG20.png';
 import photo21 from '../assets/photos/OG21.png';
+import photo22 from '../assets/photos/OG22.png';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -150,6 +151,12 @@ export const photos: Photo[] = [
     path: photo21,
     title: "Blue Eye, Albania",
     date: '2025.06.28.'
+  },
+  {
+    id: '22',
+    path: photo22,
+    title: "Big Ben, London, UK",
+    date: '2025.10.25.'
   },
   // Add more photos as needed
 ];

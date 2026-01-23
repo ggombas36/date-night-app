@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import desktopBackground from "../assets/background/week_5_desktop.png";
-import mobileBackground from "../assets/background/week_5_phone.png";
+import desktopBackground from "../assets/background/winter_cabin_desktop.png";
+import mobileBackground from "../assets/background/winter_cabin_phone.png";
 import DateNightCard from "../components/DateNightCard";
 import DateNightContent from "../components/DateNightContent";
 import EditModal from "../components/EditModal";
