@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import desktopBackground from "../assets/background/winter_cabin_desktop.png";
 import mobileBackground from "../assets/background/winter_cabin_phone.png";
+import birthdayPlan from "../assets/background/birthday_plan.png";
 import DateNightCard from "../components/DateNightCard";
 import DateNightContent from "../components/DateNightContent";
 import EditModal from "../components/EditModal";
@@ -300,23 +301,28 @@ export default function Home() {
           {showPhotos ? (
             <Photos photos={photos} />
           ) : (
-            <DateNightCard
-              isMobile={true}
-              currentPlan={currentPlan}
-              isAdmin={isAdmin}
-              onEdit={handleEditOpen}
-              onDelete={handleDeletePlan}
-              options={options}
-              setOptions={setOptions}
-            >
-              <DateNightContent
-                currentPlan={currentPlan}
-                onPrevious={handlePrevious}
-                onNext={handleNext}
-                hasPrevious={currentPlanIndex < activePlans.length - 1}
-                hasNext={currentPlanIndex > 0}
-              />
-            </DateNightCard>
+            <img
+              src={birthdayPlan}
+              alt="Kicsi's Birthday Plan"
+              className="max-h-[90vh] max-w-[95vw] object-contain rounded-xl shadow-xl"
+            />
+            // <DateNightCard
+            //   isMobile={true}
+            //   currentPlan={currentPlan}
+            //   isAdmin={isAdmin}
+            //   onEdit={handleEditOpen}
+            //   onDelete={handleDeletePlan}
+            //   options={options}
+            //   setOptions={setOptions}
+            // >
+            //   <DateNightContent
+            //     currentPlan={currentPlan}
+            //     onPrevious={handlePrevious}
+            //     onNext={handleNext}
+            //     hasPrevious={currentPlanIndex < activePlans.length - 1}
+            //     hasNext={currentPlanIndex > 0}
+            //   />
+            // </DateNightCard>
           )}
         </div>
       </div>
@@ -331,22 +337,27 @@ export default function Home() {
           {showPhotos ? (
             <Photos photos={photos} />
           ) : (
-            <DateNightCard
-              currentPlan={currentPlan}
-              isAdmin={isAdmin}
-              onEdit={handleEditOpen}
-              onDelete={handleDeletePlan}
-              options={options}
-              setOptions={setOptions}
-            >
-              <DateNightContent
-                currentPlan={currentPlan}
-                onPrevious={handlePrevious}
-                onNext={handleNext}
-                hasPrevious={currentPlanIndex < activePlans.length - 1}
-                hasNext={currentPlanIndex > 0}
-              />
-            </DateNightCard>
+            <img
+              src={birthdayPlan}
+              alt="Kicsi's Birthday Plan"
+              className="max-h-[90vh] max-w-[60vw] object-contain rounded-xl shadow-xl"
+            />
+            // <DateNightCard
+            //   currentPlan={currentPlan}
+            //   isAdmin={isAdmin}
+            //   onEdit={handleEditOpen}
+            //   onDelete={handleDeletePlan}
+            //   options={options}
+            //   setOptions={setOptions}
+            // >
+            //   <DateNightContent
+            //     currentPlan={currentPlan}
+            //     onPrevious={handlePrevious}
+            //     onNext={handleNext}
+            //     hasPrevious={currentPlanIndex < activePlans.length - 1}
+            //     hasNext={currentPlanIndex > 0}
+            //   />
+            // </DateNightCard>
           )}
         </div>
       </div>
