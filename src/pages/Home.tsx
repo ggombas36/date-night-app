@@ -339,28 +339,28 @@ export default function Home() {
         <div className="flex items-center justify-center h-full">
           {showPhotos ? (
             <Photos photos={photos} />
-          ) : (
+          ) : ( isbirthday ? (
             <img
               src={birthdayPlan}
               alt="Kicsi's Birthday Plan"
               className="max-h-[90vh] max-w-[60vw] object-contain rounded-xl shadow-xl"
-            />
-            // <DateNightCard
-            //   currentPlan={currentPlan}
-            //   isAdmin={isAdmin}
-            //   onEdit={handleEditOpen}
-            //   onDelete={handleDeletePlan}
-            //   options={options}
-            //   setOptions={setOptions}
-            // >
-            //   <DateNightContent
-            //     currentPlan={currentPlan}
-            //     onPrevious={handlePrevious}
-            //     onNext={handleNext}
-            //     hasPrevious={currentPlanIndex < activePlans.length - 1}
-            //     hasNext={currentPlanIndex > 0}
-            //   />
-            // </DateNightCard>
+            />) : (
+            <DateNightCard
+              currentPlan={currentPlan}
+              isAdmin={isAdmin}
+              onEdit={handleEditOpen}
+              onDelete={handleDeletePlan}
+              options={options}
+              setOptions={setOptions}
+            >
+              <DateNightContent
+                currentPlan={currentPlan}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                hasPrevious={currentPlanIndex < activePlans.length - 1}
+                hasNext={currentPlanIndex > 0}
+              />
+            </DateNightCard>)
           )}
         </div>
       </div>
