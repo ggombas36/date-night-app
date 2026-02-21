@@ -34,6 +34,8 @@ interface DateOption {
   edited: boolean;
 }
 
+const isbirthday = true;
+
 export default function Home() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
@@ -300,29 +302,30 @@ export default function Home() {
         <div className="flex items-center justify-center h-full">
           {showPhotos ? (
             <Photos photos={photos} />
-          ) : (
-            <img
+          ) : ( isbirthday ? (
+                        <img
               src={birthdayPlan}
               alt="Kicsi's Birthday Plan"
               className="max-h-[90vh] max-w-[95vw] object-contain rounded-xl shadow-xl"
-            />
-            // <DateNightCard
-            //   isMobile={true}
-            //   currentPlan={currentPlan}
-            //   isAdmin={isAdmin}
-            //   onEdit={handleEditOpen}
-            //   onDelete={handleDeletePlan}
-            //   options={options}
-            //   setOptions={setOptions}
-            // >
-            //   <DateNightContent
-            //     currentPlan={currentPlan}
-            //     onPrevious={handlePrevious}
-            //     onNext={handleNext}
-            //     hasPrevious={currentPlanIndex < activePlans.length - 1}
-            //     hasNext={currentPlanIndex > 0}
-            //   />
-            // </DateNightCard>
+            />) : (
+            <DateNightCard
+              isMobile={true}
+              currentPlan={currentPlan}
+              isAdmin={isAdmin}
+              onEdit={handleEditOpen}
+              onDelete={handleDeletePlan}
+              options={options}
+              setOptions={setOptions}
+            >
+              <DateNightContent
+                currentPlan={currentPlan}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                hasPrevious={currentPlanIndex < activePlans.length - 1}
+                hasNext={currentPlanIndex > 0}
+              />
+            </DateNightCard>
+            )
           )}
         </div>
       </div>
