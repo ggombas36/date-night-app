@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import desktopBackground from "../assets/background/winter_cabin_desktop.png";
-import mobileBackground from "../assets/background/winter_cabin_phone.png";
-import birthdayPlan from "../assets/background/birthday_plan.png";
+import desktopBackground from "../assets/background/spring_background_desktop.png";
+import mobileBackground from "../assets/background/spring_background_mobile.png";
 import DateNightCard from "../components/DateNightCard";
 import DateNightContent from "../components/DateNightContent";
 import EditModal from "../components/EditModal";
@@ -33,8 +32,6 @@ interface DateOption {
   location: string;
   edited: boolean;
 }
-
-const isbirthday = true;
 
 export default function Home() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
@@ -302,12 +299,7 @@ export default function Home() {
         <div className="flex items-center justify-center h-full">
           {showPhotos ? (
             <Photos photos={photos} />
-          ) : ( isbirthday ? (
-                        <img
-              src={birthdayPlan}
-              alt="Kicsi's Birthday Plan"
-              className="max-h-[90vh] max-w-[95vw] object-contain rounded-xl shadow-xl"
-            />) : (
+          ) : ( 
             <DateNightCard
               isMobile={true}
               currentPlan={currentPlan}
@@ -325,7 +317,6 @@ export default function Home() {
                 hasNext={currentPlanIndex > 0}
               />
             </DateNightCard>
-            )
           )}
         </div>
       </div>
@@ -339,12 +330,7 @@ export default function Home() {
         <div className="flex items-center justify-center h-full">
           {showPhotos ? (
             <Photos photos={photos} />
-          ) : ( isbirthday ? (
-            <img
-              src={birthdayPlan}
-              alt="Kicsi's Birthday Plan"
-              className="max-h-[90vh] max-w-[60vw] object-contain rounded-xl shadow-xl"
-            />) : (
+          ) : ( 
             <DateNightCard
               currentPlan={currentPlan}
               isAdmin={isAdmin}
@@ -360,7 +346,7 @@ export default function Home() {
                 hasPrevious={currentPlanIndex < activePlans.length - 1}
                 hasNext={currentPlanIndex > 0}
               />
-            </DateNightCard>)
+            </DateNightCard>
           )}
         </div>
       </div>
