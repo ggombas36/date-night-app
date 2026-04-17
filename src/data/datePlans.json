@@ -1,5 +1,20 @@
 [
   {
+    "id": "2026.04.18",
+    "title": "Matcha Morning & Mall Marathon 🍵🛍️🌆",
+    "date": "2026.04.18",
+    "description": "The city is just waking up as we step out between 9 and 9:30, trading a slow start for something more vibrant. ✨ The morning begins with a cozy stop for a smooth matcha and a breakfast that actually feels worth getting up for. 🍵🥐 Once we’re fueled, the energy shifts and the real mission begins inside one of our favorite shopping playgrounds. Expect a mix of fresh fits, signature scents, and spontaneous finds that make the whole experience even better. 🛍️😏 After the hunt, we slow things down with a comforting lunch built around rich and flavorful Asian dishes. Warm noodles or rice, bold sauces, and that perfect post-shopping satisfaction. 🍜🥢 From there, the day splits paths. One of us heads to university, while the other takes the treasures home for a well-earned reset. The final chapter brings a refreshing swim, closing the day with a clean and calm finish. 🏊‍♂️🌿",
+    "activities": [
+      "Leave home between 9:00 and 9:30",
+      "Start the day with matcha and a cozy breakfast 🍵🥐",
+      "Shopping spree with fashion, fragrances, and spontaneous finds 🛍️",
+      "Lunch with flavorful Asian noodles or rice dishes 🍜🥢",
+      "Split paths: university and heading home with the shopping bags",
+      "Swim session to wrap up the day 🏊‍♂️"
+    ],
+    "is_deleted": false
+  },
+  {
     "id": "2026.03.06",
     "title": "Purrs, Paws & Crispy Bites 🐾☕🍗",
     "date": "2026.03.06",
