@@ -23,6 +23,11 @@ import photo19 from '../assets/photos/OG19.jpg';
 import photo20 from '../assets/photos/OG20.jpg';
 import photo21 from '../assets/photos/OG21.jpg';
 import photo22 from '../assets/photos/OG22.jpg';
+import photo23 from '../assets/photos/OG23.jpg';
+import photo24 from '../assets/photos/OG24.jpg';
+import photo25 from '../assets/photos/OG25.jpg';
+import photo26 from '../assets/photos/OG26.jpg';
+import photo27 from '../assets/photos/OG27.jpg';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -157,6 +162,36 @@ export const photos: Photo[] = [
     path: photo22,
     title: "Big Ben, London, UK",
     date: '2025.10.25.'
+  },
+  {
+    id: '23',
+    path: photo23,
+    title: 'Baščaršija, Sarajevo, Bosnia and Herzegovina',
+    date: '2026.06.28.'
+  },
+  {
+    id: '24',
+    path: photo24,
+    title: 'Matka Canyon, North Macedonia',
+    date: '2026.07.04.'
+  },
+  {
+    id: '25',
+    path: photo25,
+    title: 'Gym Date 🏋️‍♀️✨',
+    date: '2026.08.17.'
+  },
+  {
+    id: '26',
+    path: photo26,
+    title: 'Sofia, Bulgaria',
+    date: '2026.08.23.'
+  },
+  {
+    id: '27',
+    path: photo27,
+    title: 'Lindos, Rhodes, Greece',
+    date: '2026.09.26.'
   },
   // Add more photos as needed
 ];
