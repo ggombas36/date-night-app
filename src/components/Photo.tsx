@@ -1,59 +1,47 @@
-import React from "react";
-import "../styles/scrollbar.css";
+import { useState } from "react";
+import type { Photo } from "../types/Photo";
 
-export interface Photo {
-  id: string;
-  path: string;
-  title: string;
-  date: string;
-}
-
-interface PhotosProps {
-  photos: Photo[];
-}
-
-const Photos: React.FC<PhotosProps> = ({ photos }) => {
-  const cardStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    backdropFilter: "blur(4px)",
-  };
+function PhotoCard({ photo }: { photo: Photo }) {
+  const [failed, setFailed] = useState(false);
 
   return (
-    <div className="fixed inset-0 mt-[70px] mb-[20px] mx-auto max-w-[90%] flex flex-col">
-      <div
-        className="flex-1 rounded-xl shadow-lg overflow-hidden"
-        style={cardStyle}
-      >
-        <h2 className="text-3xl z-5 font-bold px-4 py-2 text-center text-emerald-800 sticky top-0 border-b border-emerald-100/20">
-          Photo Memories
-        </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 h-[calc(100%-4rem)] overflow-y-auto custom-scrollbar">
-          {photos.map((photo) => (
-            <div key={photo.id} className="flex flex-col items-center">
-              <div className="relative w-[200px] h-[250px] overflow-hidden rounded-md shadow-md hover:shadow-lg transition-shadow">
-                <img
-                  src={photo.path}
-                  alt={photo.title}
-                  className="h-full w-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://via.placeholder.com/200x250?text=No+Image";
-                  }}
-                />
-              </div>
-              <div className="w-full text-center mt-2">
-                <p className="text-sm font-medium text-emerald-900">
-                  {photo.title}
-                </p>
-                <p className="text-xs text-emerald-700">{photo.date}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+    <li className="min-w-0">
+      <div className="aspect-[2/3] overflow-hidden rounded-xl bg-page">
+        {failed ? (
+          <div className="flex h-full items-center justify-center p-2 text-center text-muted">Photo not available</div>
+        ) : (
+          <img
+            src={photo.path}
+            alt={photo.title}
+            width={480}
+            height={720}
+            loading="lazy"
+            className="h-full w-full object-cover"
+            onError={() => setFailed(true)}
+          />
+        )}
       </div>
-    </div>
+      <p className="mt-2 font-semibold leading-snug [overflow-wrap:anywhere]">{photo.title}</p>
+      <p className="italic text-muted">{photo.date}</p>
+    </li>
   );
-};
+}
 
-export default Photos;
+export default function Photos({ photos }: { photos: Photo[] }) {
+  return (
+    <section aria-labelledby="memories-title" className="rounded-[20px] bg-surface p-5 shadow-sheet md:p-8">
+      <h2 id="memories-title" className="mb-5 text-[28px] font-semibold leading-tight md:text-[34px]">
+        Memories
+      </h2>
+      {photos.length === 0 ? (
+        <p className="text-muted">No photos yet.</p>
+      ) : (
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-6 md:grid-cols-3 lg:grid-cols-4">
+          {photos.map((photo) => (
+            <PhotoCard key={photo.id} photo={photo} />
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}

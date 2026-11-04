@@ -1,355 +1,230 @@
-import { useState, useEffect } from "react";
-import desktopBackground from "../assets/background/spring_background_desktop.png";
-import mobileBackground from "../assets/background/spring_background_mobile.png";
-import DateNightCard from "../components/DateNightCard";
-import DateNightContent from "../components/DateNightContent";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon, PencilSquareIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import ConfirmDialog from "../components/ConfirmDialog";
 import EditModal from "../components/EditModal";
+import Header from "../components/Header";
+import Invitation from "../components/Invitation";
 import Login from "../components/Login";
-import AuthButton from "../components/AuthButton";
+import Photos from "../components/Photo";
+import TabBar, { type Tab } from "../components/TabBar";
 import datePlans from "../data/datePlans.json";
-import { useAuth } from "../context/AuthContext";
-import { dateApiService } from "../services/dateApiServices";
-import Photos from "../components/Photo"; // Make sure the path matches your file name
 import { photos } from "../data/photos";
-import { PlusIcon, PhotoIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
+import { useAuth } from "../hooks/useAuth";
+import { useNow } from "../hooks/useNow";
+import { useOpenedSeals } from "../hooks/useOpenedSeals";
+import { getSealState, isPast, pickCurrentIndex, sortNewestFirst } from "../lib/plans";
+import { dateApiService } from "../services/dateApiServices";
+import type { DatePlan } from "../types/DatePlan";
 
-interface DatePlan {
-  id: string;
-  title: string;
-  date: string;
-  description: string;
-  activities: string[];
-  is_deleted?: boolean;
-}
+const VERSION = "2.0.0";
 
-interface DateOption {
-  id: string;
-  title: string;
-  info: string;
-  selected: boolean;
-  image: string;
-  link: string;
-  location: string;
-  edited: boolean;
+const LOCAL_PLANS: DatePlan[] = datePlans.map((plan) => ({ ...plan, is_deleted: plan.is_deleted ?? false }));
+
+type LoadState = "loading" | "ready" | "fallback";
+
+type Editing = { plan: DatePlan; isNew: boolean } | null;
+
+function Skeleton() {
+  return (
+    <div className="animate-pulse space-y-4 rounded-[20px] bg-surface p-6 shadow-sheet md:p-8" aria-busy="true">
+      <span className="sr-only">Loading</span>
+      <div className="h-8 w-3/4 rounded bg-ink/10" />
+      <div className="h-5 w-1/3 rounded bg-ink/10" />
+      <div className="h-24 rounded bg-ink/10" />
+    </div>
+  );
 }
 
 export default function Home() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
-  const [currentPlanIndex, setCurrentPlanIndex] = useState(0);
-  const [showPhotos, setShowPhotos] = useState(false);
-  const [options, setOptions] = useState<DateOption[]>([]);
+  const now = useNow();
+  const { isOpened, markOpened } = useOpenedSeals();
+  const [tab, setTab] = useState<Tab>("next");
+  const [plans, setPlans] = useState<DatePlan[]>(LOCAL_PLANS);
+  const [load, setLoad] = useState<LoadState>("loading");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<Editing>(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [lastPlanNotice, setLastPlanNotice] = useState(false);
 
-  const togglePhotos = () => {
-    setShowPhotos(!showPhotos);
-  };
-
-  // Initialize plans with is_deleted property if not present
-  const [plans, setPlans] = useState<DatePlan[]>(
-    datePlans.map((plan) => ({
-      ...plan,
-      is_deleted: plan.is_deleted || false,
-    }))
-  );
-
-  const version = "© 2025.05.15. Date night app V2.3.1";
-
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [isAddingNew, setIsAddingNew] = useState(false);
-  const [isMobileView, setIsMobileView] = useState(false);
-
-  // Filter out deleted plans for display
-  const activePlans = plans.filter((plan) => !plan.is_deleted);
-
-  // Check if we're in mobile view
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobileView(window.innerWidth < 768);
-    };
-
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
+    if (!isAuthenticated) return;
+    let cancelled = false;
+    dateApiService
+      .getAllPlans()
+      .then((fetched) => {
+        if (cancelled) return;
+        if (fetched.length > 0) setPlans(fetched.map((plan) => ({ ...plan, is_deleted: plan.is_deleted ?? false })));
+        setLoad("ready");
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setPlans(LOCAL_PLANS);
+        setLoad("fallback");
+      });
     return () => {
-      window.removeEventListener("resize", checkMobile);
+      cancelled = true;
     };
-  }, []);
+  }, [isAuthenticated]);
 
-  useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const fetchedPlans = await dateApiService.getAllPlans();
-        if (Array.isArray(fetchedPlans)) {
-          setPlans(
-            fetchedPlans.map((plan) => ({
-              ...plan,
-              is_deleted: plan.is_deleted || false,
-            }))
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching plans:", error);
-        // Fallback to local JSON if API fails
-        setPlans(
-          datePlans.map((plan) => ({
-            ...plan,
-            is_deleted: plan.is_deleted || false,
-          }))
-        );
-      }
-    };
+  const active = useMemo(() => sortNewestFirst(plans.filter((plan) => !plan.is_deleted)), [plans]);
 
-    fetchPlans();
-  }, []);
+  const selectedIndex = active.findIndex((plan) => plan.id === selectedId);
+  const index = selectedIndex >= 0 ? selectedIndex : pickCurrentIndex(active, now);
+  const plan = active[index];
+  const allPast = active.length > 0 && active.every((p) => isPast(p, now));
+  const isLastTime = allPast && index === 0 && selectedIndex < 0;
 
-  useEffect(() => {
-    const fetchOptions = async () => {
-      try {
-        const fetchedOptions = await dateApiService.getAllOptions();
-        if (Array.isArray(fetchedOptions)) {
-          setOptions(fetchedOptions);
-        }
-      } catch (error) {
-        console.error("Error fetching options:", error);
-        // // Fallback to local JSON if API fails
-        // setOptions(dateOptions);
-      }
-    };
+  if (!isAuthenticated) return <Login />;
 
-    fetchOptions();
-  }, []);
+  const editingPaused = load !== "ready";
 
-  // Reset current index if plans change (e.g., after delete)
-  useEffect(() => {
-    if (currentPlanIndex >= activePlans.length && activePlans.length > 0) {
-      setCurrentPlanIndex(0);
+  const save = async (saved: DatePlan, isNew: boolean) => {
+    if (editingPaused) throw new Error("Editing is paused while the saved copy is showing.");
+    let id = saved.id;
+    if (isNew) {
+      let n = 2;
+      while (plans.some((p) => p.id === id)) id = `${saved.id}-${n++}`;
     }
-  }, [activePlans.length, currentPlanIndex]);
-
-  const handlePrevious = () => {
-    setCurrentPlanIndex((prev) => Math.min(prev + 1, activePlans.length - 1));
+    const next = isNew
+      ? [{ ...saved, id, is_deleted: false }, ...plans]
+      : plans.map((p) => (p.id === saved.id ? { ...saved, is_deleted: false } : p));
+    const ok = await dateApiService.updatePlans(next);
+    if (!ok) throw new Error("Couldn't save. Your changes are still here.");
+    setPlans(next);
+    setSelectedId(id);
+    setEditing(null);
   };
 
-  const handleNext = () => {
-    setCurrentPlanIndex((prev) => Math.max(prev - 1, 0));
+  const startDelete = () => {
+    if (active.length <= 1) setLastPlanNotice(true);
+    else setConfirmDelete(true);
   };
 
-  const handleEditOpen = () => {
-    setIsAddingNew(false);
-    setShowEditModal(true);
-  };
-
-  const handleAddNew = () => {
-    setIsAddingNew(true);
-    setShowEditModal(true);
-  };
-
-  const handleEditClose = () => {
-    setShowEditModal(false);
-  };
-
-  const handleDeletePlan = async () => {
-    if (activePlans.length <= 1) {
-      alert("Cannot delete the last date plan.");
-      return;
-    }
-
-    const planToDelete = activePlans[currentPlanIndex];
-    const updatedPlans = plans.map((plan) =>
-      plan.id === planToDelete.id ? { ...plan, is_deleted: true } : plan
-    );
-
-    const success = await dateApiService.updatePlans(updatedPlans);
-    if (success) {
-      setPlans(updatedPlans);
-      if (currentPlanIndex >= activePlans.length - 1) {
-        setCurrentPlanIndex(0);
-      }
+  const deleteCurrent = async () => {
+    setConfirmDelete(false);
+    if (!plan || editingPaused) return;
+    const next = plans.map((p) => (p.id === plan.id ? { ...p, is_deleted: true } : p));
+    if (await dateApiService.updatePlans(next)) {
+      setPlans(next);
+      setSelectedId(null);
     }
   };
 
-  const handleSavePlan = async (editedPlan: DatePlan) => {
-    let updatedPlans: DatePlan[];
+  const goEarlier = () => setSelectedId(active[Math.min(index + 1, active.length - 1)].id);
+  const goLater = () => setSelectedId(active[Math.max(index - 1, 0)].id);
 
-    if (isAddingNew) {
-      const newPlan = {
-        ...editedPlan,
-        is_deleted: false,
-      };
-      updatedPlans = [newPlan, ...plans];
-    } else {
-      updatedPlans = plans.map((plan) =>
-        plan.id === activePlans[currentPlanIndex].id
-          ? { ...editedPlan, is_deleted: false }
-          : plan
-      );
-    }
-
-    const success = await dateApiService.updatePlans(updatedPlans);
-    if (success) {
-      setPlans(updatedPlans);
-      if (isAddingNew) {
-        setCurrentPlanIndex(0);
-      }
-    }
-    setShowEditModal(false);
-  };
-
-  if (!isAuthenticated) {
-    return (
-      <div
-        className="w-screen h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
-        style={{ backgroundImage: `url(${desktopBackground})` }}
-      >
-        <div className="absolute top-0 left-0 right-0 text-center">
-          <span className="text-xs text-emerald-800 font-medium bg-white/40 px-2 py-0.1 rounded-b">
-            {version}
-          </span>
-        </div>
-        <Login />
-      </div>
-    );
-  }
-
-  // Make sure we have active plans to display
-  if (activePlans.length === 0) {
-    // All plans are deleted, create a default one
-    const defaultPlan: DatePlan = {
-      id: new Date().toISOString(),
-      title: "No Plans Available",
-      date: new Date().toISOString().split("T")[0].replace(/-/g, "."),
-      description:
-        "All date plans have been deleted. Add a new one to get started.",
-      activities: ["Add a new date plan"],
-      is_deleted: false,
-    };
-
-    setPlans([defaultPlan, ...plans]);
-    setCurrentPlanIndex(0);
-
-    return <div>Loading...</div>; // temporary while state updates
-  }
-
-  // Get the current plan to display
-  const currentPlan = activePlans[currentPlanIndex];
-
-  // Create empty plan template for new dates
-  const emptyPlan: DatePlan = {
-    id: new Date().toISOString(),
-    title: "",
-    date: new Date().toISOString().split("T")[0].replace(/-/g, "."),
-    description: "",
-    activities: [""],
-    is_deleted: false,
-  };
+  const blankPlan: DatePlan = { id: "", title: "", date: "", description: "", activities: [] };
 
   return (
-    <>
-      <div className="fixed top-0 left-0 right-0 mt-[-8px] text-center z-10">
-        <span className="text-[10px] text-emerald-800 font-small bg-white/40 px-2 py-0 rounded-b">
-          {version}
-        </span>
-      </div>
+    <div className="flex min-h-dvh flex-col">
+      <Header onLogout={logout} />
+      <TabBar active={tab} onChange={setTab} />
 
-      {/* Top left buttons */}
-      <div className="absolute top-4 left-4 z-10 flex gap-2">
-        {isAdmin && (
-          <button
-            onClick={handleAddNew}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded transition-colors duration-300 cursor-pointer flex items-center gap-1"
-          >
-            <PlusIcon className="h-4 w-4" />
-            Add Date
-          </button>
+      <main
+        className={`mx-auto w-full flex-1 px-4 pt-4 pb-24 md:pb-8 ${
+          tab === "memories" ? "max-w-5xl" : "max-w-[520px] xl:max-w-[560px]"
+        }`}
+      >
+        {tab === "memories" ? (
+          <Photos photos={photos} />
+        ) : (
+          <div className="space-y-4">
+            {load === "fallback" && (
+              <p role="status" className="rounded-xl bg-surface/92 px-4 py-2 text-muted">
+                Showing the saved copy. Couldn't reach the latest.
+              </p>
+            )}
+
+            {load === "loading" || !plan ? (
+              <Skeleton />
+            ) : (
+              <>
+                <Invitation
+                  key={plan.id}
+                  plan={plan}
+                  state={getSealState(plan, now, isOpened(plan.id), isAdmin)}
+                  isLastTime={isLastTime}
+                  isAdmin={isAdmin}
+                  onBreak={markOpened}
+                />
+
+                <nav aria-label="Browse dates" className="flex items-center justify-between rounded-xl bg-surface/92 px-1">
+                  <button
+                    type="button"
+                    onClick={goEarlier}
+                    disabled={index >= active.length - 1}
+                    className="btn-text"
+                    aria-label={index < active.length - 1 ? `Earlier date: ${active[index + 1].title}` : "Earlier"}
+                  >
+                    <ChevronLeftIcon className="size-5" aria-hidden="true" />
+                    Earlier
+                  </button>
+                  <button
+                    type="button"
+                    onClick={goLater}
+                    disabled={index <= 0}
+                    className="btn-text"
+                    aria-label={index > 0 ? `Later date: ${active[index - 1].title}` : "Later"}
+                  >
+                    Later
+                    <ChevronRightIcon className="size-5" aria-hidden="true" />
+                  </button>
+                </nav>
+
+                {isAdmin && (
+                  <div className="flex flex-wrap items-center justify-center gap-1 rounded-xl bg-surface/92 px-1">
+                    <button type="button" className="btn-text" onClick={() => setEditing({ plan: blankPlan, isNew: true })}>
+                      <PlusIcon className="size-5" aria-hidden="true" />
+                      New date
+                    </button>
+                    <button type="button" className="btn-text" onClick={() => setEditing({ plan, isNew: false })}>
+                      <PencilSquareIcon className="size-5" aria-hidden="true" />
+                      Edit
+                    </button>
+                    <button type="button" className="btn-text" onClick={startDelete}>
+                      <TrashIcon className="size-5" aria-hidden="true" />
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         )}
-        <button
-          onClick={togglePhotos}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded transition-colors duration-300 cursor-pointer flex items-center gap-1"
-        >
-          {showPhotos ? (
-            <>
-              <CalendarDaysIcon className="h-4 w-4" />
-              Date Plans
-            </>
-          ) : (
-            <>
-              <PhotoIcon className="h-4 w-4" />
-              Photos
-            </>
-          )}
-        </button>
-      </div>
+      </main>
 
-      {/* Edit/Add Modal */}
-      {showEditModal && (
+      <footer className="px-4 pb-20 text-center md:pb-6">
+        <p className="mx-auto w-fit rounded-full bg-surface/92 px-3 py-1 text-sm text-muted">
+          Kicsi's Date Night {VERSION}
+        </p>
+      </footer>
+
+      {editing && (
         <EditModal
-          currentPlan={isAddingNew ? emptyPlan : currentPlan}
-          onClose={handleEditClose}
-          onSave={handleSavePlan}
-          isMobile={isMobileView}
-          isNew={isAddingNew}
+          key={editing.isNew ? "new" : editing.plan.id}
+          plan={editing.plan}
+          isNew={editing.isNew}
+          onSave={(saved) => save(saved, editing.isNew)}
+          onClose={() => setEditing(null)}
         />
       )}
 
-      {/* Mobile view */}
-      <div
-        className="w-screen h-screen bg-cover bg-center bg-no-repeat md:hidden overflow-hidden"
-        style={{ backgroundImage: `url(${mobileBackground})` }}
-      >
-        <AuthButton isAuthenticated={true} onLogout={logout} />
-        <div className="flex items-center justify-center h-full">
-          {showPhotos ? (
-            <Photos photos={photos} />
-          ) : ( 
-            <DateNightCard
-              isMobile={true}
-              currentPlan={currentPlan}
-              isAdmin={isAdmin}
-              onEdit={handleEditOpen}
-              onDelete={handleDeletePlan}
-              options={options}
-              setOptions={setOptions}
-            >
-              <DateNightContent
-                currentPlan={currentPlan}
-                onPrevious={handlePrevious}
-                onNext={handleNext}
-                hasPrevious={currentPlanIndex < activePlans.length - 1}
-                hasNext={currentPlanIndex > 0}
-              />
-            </DateNightCard>
-          )}
-        </div>
-      </div>
-
-      {/* Desktop view */}
-      <div
-        className="hidden md:block w-screen h-screen bg-cover bg-center bg-no-repeat overflow-hidden"
-        style={{ backgroundImage: `url(${desktopBackground})` }}
-      >
-        <AuthButton isAuthenticated={true} onLogout={logout} />
-        <div className="flex items-center justify-center h-full">
-          {showPhotos ? (
-            <Photos photos={photos} />
-          ) : ( 
-            <DateNightCard
-              currentPlan={currentPlan}
-              isAdmin={isAdmin}
-              onEdit={handleEditOpen}
-              onDelete={handleDeletePlan}
-              options={options}
-              setOptions={setOptions}
-            >
-              <DateNightContent
-                currentPlan={currentPlan}
-                onPrevious={handlePrevious}
-                onNext={handleNext}
-                hasPrevious={currentPlanIndex < activePlans.length - 1}
-                hasNext={currentPlanIndex > 0}
-              />
-            </DateNightCard>
-          )}
-        </div>
-      </div>
-    </>
+      <ConfirmDialog
+        open={confirmDelete}
+        message={`Delete "${plan?.title ?? ""}"? You can't undo this.`}
+        confirmLabel="Delete"
+        cancelLabel="Keep it"
+        onConfirm={deleteCurrent}
+        onCancel={() => setConfirmDelete(false)}
+      />
+      <ConfirmDialog
+        open={lastPlanNotice}
+        message="You can't delete the last date. Add a new one first."
+        confirmLabel="OK"
+        onConfirm={() => setLastPlanNotice(false)}
+        onCancel={() => setLastPlanNotice(false)}
+      />
+    </div>
   );
 }

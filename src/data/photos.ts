@@ -1,28 +1,28 @@
-import { Photo } from '../components/Photo';
+import type { Photo } from '../types/Photo';
 
 // Import your photos or use URLs
-import photo1 from '../assets/photos/OG1.png';
-import photo2 from '../assets/photos/OG2.png';
-import photo3 from '../assets/photos/OG3.png';
-import photo4 from '../assets/photos/OG4.png';
-import photo5 from '../assets/photos/OG5.png';
-import photo6 from '../assets/photos/OG6.png';
-import photo7 from '../assets/photos/OG7.png';
-import photo8 from '../assets/photos/OG8.png';
-import photo9 from '../assets/photos/OG9.png';
-import photo10 from '../assets/photos/OG10.png';
-import photo11 from '../assets/photos/OG11.png';
-import photo12 from '../assets/photos/OG12.png';
-import photo13 from '../assets/photos/OG13.png';
-import photo14 from '../assets/photos/OG14.png';
-import photo15 from '../assets/photos/OG15.png';
-import photo16 from '../assets/photos/OG16.png';
-import photo17 from '../assets/photos/OG17.png';
-import photo18 from '../assets/photos/OG18.png';
-import photo19 from '../assets/photos/OG19.png';
-import photo20 from '../assets/photos/OG20.png';
-import photo21 from '../assets/photos/OG21.png';
-import photo22 from '../assets/photos/OG22.png';
+import photo1 from '../assets/photos/OG1.jpg';
+import photo2 from '../assets/photos/OG2.jpg';
+import photo3 from '../assets/photos/OG3.jpg';
+import photo4 from '../assets/photos/OG4.jpg';
+import photo5 from '../assets/photos/OG5.jpg';
+import photo6 from '../assets/photos/OG6.jpg';
+import photo7 from '../assets/photos/OG7.jpg';
+import photo8 from '../assets/photos/OG8.jpg';
+import photo9 from '../assets/photos/OG9.jpg';
+import photo10 from '../assets/photos/OG10.jpg';
+import photo11 from '../assets/photos/OG11.jpg';
+import photo12 from '../assets/photos/OG12.jpg';
+import photo13 from '../assets/photos/OG13.jpg';
+import photo14 from '../assets/photos/OG14.jpg';
+import photo15 from '../assets/photos/OG15.jpg';
+import photo16 from '../assets/photos/OG16.jpg';
+import photo17 from '../assets/photos/OG17.jpg';
+import photo18 from '../assets/photos/OG18.jpg';
+import photo19 from '../assets/photos/OG19.jpg';
+import photo20 from '../assets/photos/OG20.jpg';
+import photo21 from '../assets/photos/OG21.jpg';
+import photo22 from '../assets/photos/OG22.jpg';
 // Add more imports as needed
 
 export const photos: Photo[] = [

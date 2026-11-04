@@ -1,211 +1,197 @@
-import React, { useState } from 'react';
-
-interface DatePlan {
-  id: string;
-  title: string;
-  date: string;
-  description: string;
-  activities: string[];
-}
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import type { DatePlan } from "../types/DatePlan";
 
 interface EditModalProps {
-  currentPlan: DatePlan;
+  plan: DatePlan;
+  isNew: boolean;
+  /** Resolve when saved, throw an Error with a readable message when not. */
+  onSave: (plan: DatePlan) => Promise<void>;
   onClose: () => void;
-  onSave: (editedPlan: DatePlan) => void;
-  isMobile?: boolean;
-  isNew?: boolean;
 }
 
-export default function EditModal({ 
-  currentPlan,
-  onClose,
-  onSave,
-  isMobile = false,
-  isNew = false
-}: EditModalProps) {
-  const [editedPlan, setEditedPlan] = useState<DatePlan>({...currentPlan});
-  const [activities, setActivities] = useState<string[]>([...currentPlan.activities]);
+const HINT_MAX = 160;
 
-  // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setEditedPlan(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+interface Step {
+  key: number;
+  text: string;
+}
 
-  // Handle activity changes
-  const handleActivityChange = (index: number, value: string) => {
-    const newActivities = [...activities];
-    newActivities[index] = value;
-    setActivities(newActivities);
-    
-    setEditedPlan(prev => ({
-      ...prev,
-      activities: newActivities
-    }));
-  };
+const toInputDate = (value: string) => value.replace(/\./g, "-");
+const fromInputDate = (value: string) => value.replace(/-/g, ".");
 
-  // Add new activity
-  const addActivity = () => {
-    setActivities(prev => [...prev, '']);
-    setEditedPlan(prev => ({
-      ...prev,
-      activities: [...prev.activities, '']
-    }));
-  };
+export default function EditModal({ plan, isNew, onSave, onClose }: EditModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const nextKey = useRef(plan.activities.length);
+  const [title, setTitle] = useState(plan.title);
+  const [date, setDate] = useState(toInputDate(plan.date));
+  const [opensAt, setOpensAt] = useState(plan.opensAt ?? "");
+  const [hint, setHint] = useState(plan.hint ?? "");
+  const [description, setDescription] = useState(plan.description);
+  const [steps, setSteps] = useState<Step[]>(plan.activities.map((text, key) => ({ key, text })));
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
-  // Remove activity
-  const removeActivity = (index: number) => {
-    const newActivities = activities.filter((_, i) => i !== index);
-    setActivities(newActivities);
-    
-    setEditedPlan(prev => ({
-      ...prev,
-      activities: newActivities
-    }));
-  };
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.open) dialog.showModal();
+  }, []);
 
-  // Save changes
-  const handleSave = () => {
-    // For new plans, generate an ID based on the date
-    if (isNew) {
-      const newPlan = {
-        ...editedPlan,
-        id: editedPlan.date.replace(/\./g, '-')
-      };
-      onSave(newPlan);
-    } else {
-      onSave(editedPlan);
+  const updateStep = (key: number, text: string) =>
+    setSteps((prev) => prev.map((step) => (step.key === key ? { ...step, text } : step)));
+
+  const addStep = () => setSteps((prev) => [...prev, { key: nextKey.current++, text: "" }]);
+
+  const removeStep = (key: number) => setSteps((prev) => prev.filter((step) => step.key !== key));
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setError("");
+    setSaving(true);
+    const planDate = fromInputDate(date);
+    const saved: DatePlan = {
+      ...plan,
+      id: isNew ? planDate.replace(/\./g, "-") : plan.id,
+      title: title.trim(),
+      date: planDate,
+      description: description.trim(),
+      activities: steps.map((step) => step.text.trim()).filter(Boolean),
+      hint: hint.trim() || undefined,
+      opensAt: opensAt || undefined,
+    };
+    try {
+      await onSave(saved);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Couldn't save. Your changes are still here.");
+      setSaving(false);
     }
-    onClose();
-  };
-
-  // Modal style - with enhanced blur effect
-  const modalStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    backdropFilter: 'blur(10px)',
-  };
-
-  // Overlay style with stronger blur
-  const overlayStyle = {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    backdropFilter: 'blur(8px)',
   };
 
   return (
-    <div 
-      className="fixed inset-0 flex items-center justify-center z-50"
-      style={overlayStyle}
-      onClick={() => onClose()}
+    <dialog
+      ref={dialogRef}
+      onCancel={(event) => {
+        event.preventDefault();
+        if (!saving) onClose();
+      }}
+      aria-labelledby="edit-title"
+      className="m-0 h-dvh max-h-none w-full max-w-none overflow-hidden bg-surface p-0 text-ink md:m-auto md:h-auto md:max-h-[90dvh] md:max-w-[560px] md:rounded-[20px] md:shadow-sheet"
     >
-      {/* Modal content - stop propagation to prevent closing when clicking inside */}
-      <div 
-        className={`${isMobile ? 'h-[90vh] w-[95vw]' : 'h-[95vh] w-[60vw] max-w-xl'} rounded-xl 
-                 shadow-2xl overflow-auto`}
-        style={modalStyle}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="p-6 flex flex-col h-full">
-          <div className="flex justify-between items-center mb-6 border-b border-gray-300/30 pb-4">
-            <h2 className="text-2xl font-bold text-emerald-800">
-              {isNew ? "Add New Date Plan" : "Edit Date Plan"}
-            </h2>
-            <button 
-              onClick={onClose}
-              className="text-emerald-800 hover:text-emerald-600 text-2xl font-bold cursor-pointer"
-              aria-label="Close edit modal"
-            >
-              ×
-            </button>
+      <form onSubmit={handleSubmit} className="flex h-full max-h-dvh flex-col md:max-h-[90dvh]">
+        <div className="flex-1 space-y-4 overflow-y-auto p-5 md:p-6">
+          <h2 id="edit-title" className="text-[28px] font-semibold leading-tight">
+            {isNew ? "New date" : "Edit date"}
+          </h2>
+
+          <div>
+            <label htmlFor="edit-name" className="label">
+              Title
+            </label>
+            <input id="edit-name" className="field" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
 
-          <div className="flex-1 overflow-y-auto custom-scrollbar">
-            <form className="space-y-4 text-emerald-800">
-              <div>
-                <label className="block mb-1 font-medium">Date (YYYY.MM.DD)</label>
-                <input
-                  type="text"
-                  name="date"
-                  value={editedPlan.date}
-                  onChange={handleChange}
-                  className="w-full p-2 bg-white/70 rounded border border-emerald-200"
-                  placeholder="YYYY.MM.DD"
-                />
-              </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="edit-date" className="label">
+                Date
+              </label>
+              <input
+                id="edit-date"
+                type="date"
+                className="field"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="edit-opens" className="label">
+                Opens at (optional)
+              </label>
+              <input
+                id="edit-opens"
+                type="datetime-local"
+                className="field"
+                value={opensAt}
+                onChange={(e) => setOpensAt(e.target.value)}
+              />
+            </div>
+          </div>
 
-              <div>
-                <label className="block mb-1 font-medium">Title</label>
-                <input
-                  type="text"
-                  name="title"
-                  value={editedPlan.title}
-                  onChange={handleChange}
-                  className="w-full p-2 bg-white/70 rounded border border-emerald-200"
-                  placeholder="Enter a title for the date"
-                />
-              </div>
+          <div>
+            <label htmlFor="edit-hint" className="label">
+              Hint (optional)
+            </label>
+            <input
+              id="edit-hint"
+              className="field"
+              value={hint}
+              maxLength={HINT_MAX}
+              onChange={(e) => setHint(e.target.value)}
+              aria-describedby="edit-hint-count"
+            />
+            <p id="edit-hint-count" className="mt-1 text-sm text-muted">
+              {hint.length}/{HINT_MAX}. Shown while the seal is closed.
+            </p>
+          </div>
 
-              <div>
-                <label className="block mb-1 font-medium">Description</label>
-                <textarea
-                  name="description"
-                  value={editedPlan.description}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full p-2 bg-white/70 rounded border border-emerald-200"
-                  placeholder="Enter a description of the date"
-                ></textarea>
-              </div>
+          <div>
+            <label htmlFor="edit-description" className="label">
+              Description
+            </label>
+            <textarea
+              id="edit-description"
+              className="field min-h-28"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
 
-              <div>
-                <div className="flex justify-between items-center mb-1">
-                  <label className="font-medium">Activities</label>
+          <fieldset>
+            <legend className="label">Plan</legend>
+            <ul className="space-y-2">
+              {steps.map((step, index) => (
+                <li key={step.key} className="flex items-center gap-2">
+                  <input
+                    className="field"
+                    aria-label={`Step ${index + 1}`}
+                    value={step.text}
+                    onChange={(e) => updateStep(step.key, e.target.value)}
+                  />
                   <button
                     type="button"
-                    onClick={addActivity}
-                    className="text-emerald-700 hover:text-emerald-500 font-medium text-sm cursor-pointer"
+                    onClick={() => removeStep(step.key)}
+                    className="btn-text shrink-0 px-2"
+                    aria-label={`Remove step ${index + 1}`}
                   >
-                    + Add Activity
+                    <TrashIcon className="size-5" aria-hidden="true" />
                   </button>
-                </div>
-                
-                <div className="space-y-2">
-                  {activities.map((activity, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={activity}
-                        onChange={(e) => handleActivityChange(index, e.target.value)}
-                        className="flex-1 p-2 bg-white/70 rounded border border-emerald-200"
-                        placeholder={`Activity ${index + 1}`}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeActivity(index)}
-                        className="text-red-500 hover:text-red-700 cursor-pointer"
-                        disabled={activities.length <= 1}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </form>
-          </div>
+                </li>
+              ))}
+            </ul>
+            <button type="button" onClick={addStep} className="btn-text mt-2">
+              <PlusIcon className="size-5" aria-hidden="true" />
+              Add step
+            </button>
+          </fieldset>
+        </div>
 
-          <div className="mt-6 border-t border-gray-300/30 pt-4">
-            <button
-              onClick={handleSave}
-              className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition-colors cursor-pointer"
-            >
-              {isNew ? "Add Date Plan" : "Save Changes"}
+        <div className="border-t border-rule bg-surface p-4 md:px-6">
+          {error && (
+            <p role="alert" className="mb-3 text-accent">
+              {error}
+            </p>
+          )}
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={onClose} disabled={saving} className="btn-text">
+              Cancel
+            </button>
+            <button type="submit" disabled={saving} className="btn-primary">
+              {saving ? "Saving..." : "Save"}
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </dialog>
   );
 }

@@ -1,0 +1,35 @@
+{
+  "brand": "Kicsi's Date Night",
+  "tagline": "A következő randi már vár.",
+  "brief": "Személyes webapp kettőnknek. Gergely megtervezi a randikat, Kicsi előbb csak egy ízelítőt lát, aztán felbontja a meghívót. Később a volt randik emlékként maradnak meg.",
+  "adjectives": ["meghitt", "játékos", "gondos"],
+  "criteria": "Kettőnk alakja a rajzolt képekből, a meghívó pecsétje, 32 px-en is felismerhető, egy színben működik.",
+  "mockups": ["app-icon", "favicon-tab", "website", "sticker", "business-card", "social"],
+  "nav": ["Következő randi", "Emlékek"],
+  "brand_color": "#8c2f39",
+  "greyscale": false,
+  "final": true,
+  "designer": "Gergely",
+  "round": 3,
+  "concepts": [
+    {
+      "name": "Kámea pecsét",
+      "symbol": "../svg/kamea.svg",
+      "lockup": "../svg/horizontal.svg",
+      "stacked": "../svg/stacked.svg",
+      "avatar": "../svg/kamea-small.svg",
+      "idea": "Kettőnk profilja orr az orrhoz, a meghívó viaszpecsétjébe vágva.",
+      "rationale": [
+        "A rajzolt közös képekből (OG10): a frufru, a hosszú haj, a kerek szemüveg",
+        "A pecsét a fő mozdulat is: Kicsi feltöri, hogy lássa a következő randit",
+        "Egy színben, valódi kivágásokkal; kis méretre külön egyszerűsített rajz"
+      ]
+    }
+  ],
+  "recommendation": "Kámea pecsét: a jel és az app fő gombja ugyanaz a forma.",
+  "next_steps": [
+    "Tokenek a kódba: színek, Fraunces, nappali és esti téma",
+    "Tartalommodell és design spec a meghívó képernyőhöz",
+    "Build: a pecsét felbontása rugós mozgással"
+  ]
+}

@@ -1,1 +1,203 @@
 @import "tailwindcss";
+@import "@fontsource/fraunces/latin-400.css";
+@import "@fontsource/fraunces/latin-ext-400.css";
+@import "@fontsource/fraunces/latin-600.css";
+@import "@fontsource/fraunces/latin-ext-600.css";
+@import "@fontsource/fraunces/latin-600-italic.css";
+@import "@fontsource/fraunces/latin-ext-600-italic.css";
+
+/* Tokens: brand/03-visual-system.md. The theme is resolved to light or dark on <html data-theme>. */
+:root {
+  color-scheme: light;
+  --bg: #fbf6ec;
+  --surface: #ffffff;
+  --text: #2a211c;
+  --muted: #5e5048;
+  --accent: #8c2f39;
+  --accent-fg: #ffffff;
+  --seal: #8c2f39;
+  --rule: rgb(42 33 28 / 0.14);
+  --sheet-shadow: 0 10px 30px rgb(42 33 28 / 0.18);
+  --bg-image: url("./assets/background/day-mobile.jpg");
+  --spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --bg-image: url("./assets/background/day-desktop.jpg");
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #16100c;
+  --surface: #221913;
+  --text: #f5e9d6;
+  --muted: #c9b59c;
+  --accent: #f0b45e;
+  --accent-fg: #16100c;
+  --seal: #c4515d;
+  --rule: rgb(245 233 214 / 0.14);
+  --sheet-shadow: 0 10px 30px rgb(0 0 0 / 0.5);
+  --bg-image: url("./assets/background/night.jpg");
+}
+
+@theme inline {
+  --font-sans: "Fraunces", Georgia, "Times New Roman", serif;
+  --color-page: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-seal: var(--seal);
+  --color-rule: var(--rule);
+  --shadow-sheet: var(--sheet-shadow);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* A fixed layer instead of background-attachment: fixed, which iOS ignores. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-image) center / cover no-repeat;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button,
+a,
+input,
+textarea {
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease,
+    box-shadow 150ms ease, transform 150ms ease, opacity 150ms ease;
+}
+
+/* The seal: two clipped halves that fall apart along a jagged crack. */
+.seal {
+  position: relative;
+  width: var(--seal-size, 72px);
+  height: var(--seal-size, 72px);
+  color: var(--seal);
+}
+
+.seal__half {
+  position: absolute;
+  inset: 0;
+  transition: transform 500ms var(--spring), opacity 400ms ease 100ms;
+}
+
+.seal__half--left {
+  clip-path: polygon(0 0, 52% 0, 46% 22%, 54% 40%, 47% 62%, 53% 100%, 0 100%);
+}
+
+.seal__half--right {
+  clip-path: polygon(52% 0, 100% 0, 100% 100%, 53% 100%, 47% 62%, 54% 40%, 46% 22%);
+}
+
+.seal[data-broken="true"] .seal__half--left {
+  transform: translate(-16px, 12px) rotate(-14deg);
+  opacity: 0;
+}
+
+.seal[data-broken="true"] .seal__half--right {
+  transform: translate(16px, 12px) rotate(14deg);
+  opacity: 0;
+}
+
+.seal-button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.unfold {
+  animation: unfold 500ms var(--spring) both;
+}
+
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes seal-float {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+
+.seal-button:not([data-broken="true"]) .seal {
+  animation: seal-float 4s ease-in-out infinite;
+}
+
+dialog[open] {
+  animation: sheet-up 250ms ease both;
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.5);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-accent px-5 font-semibold text-accent-fg hover:-translate-y-px hover:shadow-sheet disabled:cursor-not-allowed disabled:opacity-60;
+    font-size: 15px;
+  }
+
+  .btn-text {
+    @apply inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl px-3 font-semibold text-ink hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-40;
+    font-size: 15px;
+  }
+
+  .field {
+    @apply block min-h-11 w-full rounded-xl border border-rule bg-page px-3 py-2 text-ink;
+  }
+
+  .label {
+    @apply mb-1 block font-semibold;
+    font-size: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 150ms !important;
+  }
+
+  .seal[data-broken="true"] .seal__half--left,
+  .seal[data-broken="true"] .seal__half--right {
+    transform: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

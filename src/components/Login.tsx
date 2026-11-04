@@ -1,69 +1,80 @@
-import React, { useState } from 'react';
-import AuthButton from './AuthButton';
-import { useAuth } from '../context/AuthContext';
+import { useState, type FormEvent } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { BreakableSeal } from "./SealMark";
+import Wordmark from "./Wordmark";
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setError("");
     setIsLoading(true);
-
     try {
-      const isAuthenticated = await login(username, password);
-      if (!isAuthenticated) {
-        setError('Invalid credentials');
-      }
-    } catch (err) {
-      setError('Something went wrong');
+      const ok = await login(username, password);
+      if (!ok) setError("That didn't match. Check the name and password.");
+    } catch {
+      setError("Something went wrong. Try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center backdrop-blur-sm">
-      <div className="bg-white/10 backdrop-blur-lg 
-                    rounded-xl shadow-lg p-4 md:p-8 transition-all duration-300">
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4 h-full justify-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-emerald-800 mb-6">
-            Login to OG's Date Night App
-          </h2>
-          
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="p-2 rounded border border-emerald-200 bg-white/70"
-            required
-          />
-          
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="p-2 rounded border border-emerald-200 bg-white/70"
-            required
-          />
-          
+    <main className="mx-auto flex min-h-dvh w-full max-w-[520px] items-center px-4 py-8">
+      <form onSubmit={handleSubmit} className="w-full rounded-[20px] bg-surface p-6 shadow-sheet md:p-8">
+        <div className="mb-6 flex flex-col items-center gap-3 text-center">
+          <BreakableSeal broken={false} size={96} />
+          <h1 className="text-[28px] leading-tight">
+            <Wordmark />
+          </h1>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="login-name" className="label">
+              Name
+            </label>
+            <input
+              id="login-name"
+              type="text"
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="field"
+              aria-describedby={error ? "login-error" : undefined}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="login-password" className="label">
+              Password
+            </label>
+            <input
+              id="login-password"
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="field"
+              aria-describedby={error ? "login-error" : undefined}
+              required
+            />
+          </div>
           {error && (
-            <p className="text-red-500 text-sm text-center">{error}</p>
+            <p id="login-error" role="alert" className="text-accent">
+              {error}
+            </p>
           )}
-          
-          <AuthButton 
-            isAuthenticated={false} 
-            isLoading={isLoading} 
-            isSubmit={true}
-          />
-        </form>
-      </div>
-    </div>
+          <button type="submit" disabled={isLoading} className="btn-primary w-full">
+            {isLoading ? "Coming in..." : "Come in"}
+          </button>
+        </div>
+      </form>
+    </main>
   );
 }

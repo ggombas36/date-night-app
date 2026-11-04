@@ -37,7 +37,7 @@ const DateOptions: React.FC<DateOptionsProps> = ({ options, setOptions }) => {
     });
   };
 
-  const handleSelect = (id: string, e: React.MouseEvent) => {
+  const handleSelect = (id: string, e: React.SyntheticEvent) => {
     e.stopPropagation();
     if (!areOptionsEdited) {
       const updatedOptions = options.map((option) => ({
@@ -95,7 +95,7 @@ const DateOptions: React.FC<DateOptionsProps> = ({ options, setOptions }) => {
                     <input
                       type="checkbox"
                       checked={option.selected}
-                      onChange={(e) => handleSelect(option.id, e as any)}
+                      onChange={(e) => handleSelect(option.id, e)}
                       className="appearance-none w-6 h-6 rounded-lg border-2 border-emerald-600 
                              checked:bg-emerald-600 checked:border-transparent
                              cursor-pointer transition-colors duration-200
