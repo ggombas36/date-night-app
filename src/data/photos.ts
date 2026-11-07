@@ -28,6 +28,9 @@ import photo24 from '../assets/photos/OG24.jpg';
 import photo25 from '../assets/photos/OG25.jpg';
 import photo26 from '../assets/photos/OG26.jpg';
 import photo27 from '../assets/photos/OG27.jpg';
+import photo28 from '../assets/photos/OG28.jpg';
+import photo29 from '../assets/photos/OG29.jpg';
+import photo30 from '../assets/photos/OG30.jpg';
 // Add more imports as needed
 
 export const photos: Photo[] = [
@@ -192,6 +195,24 @@ export const photos: Photo[] = [
     path: photo27,
     title: 'Lindos, Rhodes, Greece',
     date: '2026.09.26.'
+  },
+  {
+    id: '28',
+    path: photo28,
+    title: 'Acropolis, Athens, Greece',
+    date: '2026.09.28.'
+  },
+  {
+    id: '29',
+    path: photo29,
+    title: 'Trebević, Sarajevo, Bosnia and Herzegovina',
+    date: '2026.06.29.'
+  },
+  {
+    id: '30',
+    path: photo30,
+    title: 'Road Trip Moments 🚗✨',
+    date: '2026.08.'
   },
   // Add more photos as needed
 ];
