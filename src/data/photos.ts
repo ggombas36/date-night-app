@@ -168,51 +168,51 @@ export const photos: Photo[] = [
   },
   {
     id: '23',
+    path: photo30,
+    title: 'Road Trip Moments 🚗✨',
+    date: '2026.06.28.'
+  },
+  {
+    id: '24',
     path: photo23,
     title: 'Baščaršija, Sarajevo, Bosnia and Herzegovina',
     date: '2026.06.28.'
   },
   {
-    id: '24',
-    path: photo24,
-    title: 'Matka Canyon, North Macedonia',
-    date: '2026.07.04.'
-  },
-  {
     id: '25',
-    path: photo25,
-    title: 'Gym Date 🏋️‍♀️✨',
-    date: '2026.08.17.'
-  },
-  {
-    id: '26',
-    path: photo26,
-    title: 'Sofia, Bulgaria',
-    date: '2026.08.23.'
-  },
-  {
-    id: '27',
-    path: photo27,
-    title: 'Lindos, Rhodes, Greece',
-    date: '2026.09.26.'
-  },
-  {
-    id: '28',
-    path: photo28,
-    title: 'Acropolis, Athens, Greece',
-    date: '2026.09.28.'
-  },
-  {
-    id: '29',
     path: photo29,
     title: 'Trebević, Sarajevo, Bosnia and Herzegovina',
     date: '2026.06.29.'
   },
   {
+    id: '26',
+    path: photo28,
+    title: 'Acropolis, Athens, Greece',
+    date: '2026.07.02.'
+  },
+  {
+    id: '27',
+    path: photo24,
+    title: 'Matka Canyon, North Macedonia',
+    date: '2026.07.04.'
+  },
+  {
+    id: '28',
+    path: photo25,
+    title: 'Gym Date 🏋️‍♀️✨',
+    date: '2026.08.17.'
+  },
+  {
+    id: '29',
+    path: photo26,
+    title: 'Sofia, Bulgaria',
+    date: '2026.08.23.'
+  },
+  {
     id: '30',
-    path: photo30,
-    title: 'Road Trip Moments 🚗✨',
-    date: '2026.08.'
+    path: photo27,
+    title: 'Lindos, Rhodes, Greece',
+    date: '2026.09.26.'
   },
   // Add more photos as needed
 ];
